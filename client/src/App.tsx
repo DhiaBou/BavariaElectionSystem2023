@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Button from '@mui/material/Button';
+
+import { List, ListItem, ListItemText } from '@material-ui/core';
+
+const MyComponent = () => {
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/')
+            .then(response => response.json())
+            .then(data => setItems(data))
+            .catch(error => console.error("There was an error!", error));
+    }, []);
+
+    console.log(
+        items
+    );
+
+    return (
+        <List>
+            {items.map((item, index) => (
+                <ListItem key={index}>
+                    <ListItemText primary={item} />
+                </ListItem>
+            ))}
+        </List>
+    );
+}
+
+
 
 function App() {
 
@@ -19,9 +48,10 @@ function App() {
           rel="noopener noreferrer"
         >
     <Button variant="contained" color="primary">
-      Click Meeeeee
+      Click
     </Button>
         </a>
+          <MyComponent/>
       </header>
     </div>
   );

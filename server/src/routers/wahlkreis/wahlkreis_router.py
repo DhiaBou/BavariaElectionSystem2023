@@ -6,4 +6,4 @@ wahlkreis_router = APIRouter(
 
 @wahlkreis_router.get("/")
 async def get_wahlkreis():
-    return []
+    return ["3asba"]
