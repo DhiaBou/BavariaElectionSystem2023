@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
+
 def get_vote_counts(database_url):
     # Create an engine and bind it to a session
     engine = create_engine(database_url)
@@ -64,6 +65,7 @@ HAVING
         print(f"Error occurred: {e}")
     finally:
         session.close()
+
 
 # Replace with your database URL
 database_url = "postgresql://username:password@localhost:5433/dbname"

@@ -1,5 +1,6 @@
-
 from vote_counts import get_vote_counts
+
+
 def allocate_seats_sainte_lague(vote_counts, total_seats):
     """
     Allocate seats using the Sainte-Laguë/Schepers method.
@@ -26,6 +27,8 @@ def allocate_seats_sainte_lague(vote_counts, total_seats):
         seat_allocation[party_id] += 1
 
     return seat_allocation
+
+
 database_url = "postgresql://username:password@localhost:5433/dbname"
 # Example vote counts
 vote_counts_example = get_vote_counts(database_url)
@@ -35,4 +38,3 @@ vote_counts_example = get_vote_counts(database_url)
 total_seats = 89
 seat_allocation_result = allocate_seats_sainte_lague(vote_counts_example, total_seats)
 print(seat_allocation_result)
-

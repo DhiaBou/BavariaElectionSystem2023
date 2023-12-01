@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
+
 def get_direct_candidates(database_url):
     # Create an engine and bind it to a session
     engine = create_engine(database_url)
@@ -67,9 +68,9 @@ select * from direct_candidates"""
     finally:
         session.close()
 
+
 # Replace with your database URL
 database_url = "postgresql://username:password@localhost:5433/dbname"
 
 # Get vote counts
 direct_candidates = get_direct_candidates(database_url)
-
