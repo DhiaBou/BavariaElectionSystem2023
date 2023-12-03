@@ -100,7 +100,6 @@ docs/_build/
 # Logs and databases #
 ######################
 *.log
-*.sql
 *.sqlite
 *.sqlite3
 *.db
