@@ -62,6 +62,7 @@ class Wahlkreis(Base):
 
     WahlkreisId = Column(Integer, primary_key=True)
     Name = Column(String)
+    Abgeordnetenmandate = Column(Integer)
 
 
 class Zweite_Stimme_Ohne_Kandidaten(Base):
