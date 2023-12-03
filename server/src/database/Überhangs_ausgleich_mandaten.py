@@ -1,8 +1,8 @@
-from src.database.test_algo import sainte_lague_iterative
+from src.database.test_algo import sainte_lague_iterative_dict
 
 
 def allocate_final_seats_in_wahlkreis(votes, total_seats, erste_stimme):
-    erste_verteilung = sainte_lague_iterative(votes, total_seats)
+    erste_verteilung = sainte_lague_iterative_dict(votes, total_seats)
     difference_dict = {key: erste_verteilung[key] - erste_stimme[key] for key in erste_verteilung if key in erste_stimme}
 
     positive_dict = {}
@@ -30,7 +30,7 @@ def allocate_final_seats_in_wahlkreis(votes, total_seats, erste_stimme):
             # Add the key and value from dict1 to the result_dict
             votes_without_überhangs[key] = votes[key]
 
-    zweite_alloc = sainte_lague_iterative(votes_without_überhangs, number_of_überhangsmandate)
+    zweite_alloc = sainte_lague_iterative_dict(votes_without_überhangs, number_of_überhangsmandate)
 
     final_alloc = {
         key: (erste_verteilung[key] - negative_dict[key]) if key in negative_dict else (
@@ -41,3 +41,11 @@ def allocate_final_seats_in_wahlkreis(votes, total_seats, erste_stimme):
 
 
 
+votes = {1: 487487, 2: 122291, 3: 228057, 4: 223034, 5: 95537}
+
+
+direct_candidates =  {1: 8, 2: 0, 3: 0, 4: 0, 5: 0}
+
+
+x =allocate_final_seats_in_wahlkreis(votes, 16, direct_candidates)
+print(x)
