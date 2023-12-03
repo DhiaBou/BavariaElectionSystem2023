@@ -123,4 +123,52 @@ SELECT "WahlkreisId",
        "ParteiID",
        stimmenzahl
 FROM direct_candidates);
+create view gesamt_stimmen_pro_partei_pro_stimmkreis_view as (WITH gesamt_erststimmen_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"       AS stimmkreisid,
+                                                            s."Name"              AS stimmkreisname,
+                                                            p."ParteiID"          AS parteiid,
+                                                            p."Name"              AS parteiname,
+                                                            count(e."KandidatID") AS erststimmen
+                                                     FROM stimmkreis s
+                                                              CROSS JOIN parteien p
+                                                              LEFT JOIN kandidaten k ON p."ParteiID" = k."ParteiID"
+                                                              LEFT JOIN erste_stimmzettel e
+                                                                        ON e."KandidatID" = k."KandidatID" AND e."StimmkreisId" = s."StimmkreisId"
+                                                     GROUP BY s."StimmkreisId", s."Name", p."ParteiID", p."Name"),
+     gesamt_zweitstimmen_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"       AS stimmkreisid,
+                                                             s."Name"              AS stimmkreisname,
+                                                             p."ParteiID"          AS parteiid,
+                                                             p."Name"              AS parteiname,
+                                                             count(e."KandidatID") AS zweitstimmen
+                                                      FROM stimmkreis s
+                                                               CROSS JOIN parteien p
+                                                               LEFT JOIN kandidaten k ON p."ParteiID" = k."ParteiID"
+                                                               LEFT JOIN zweite_stimmzettel e
+                                                                         ON e."KandidatID" = k."KandidatID" AND e."StimmkreisId" = s."StimmkreisId"
+                                                      GROUP BY s."StimmkreisId", s."Name", p."ParteiID", p."Name"),
+     gesamt_zweitstimmen_ohne_kandidaten_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"     AS stimmkreisid,
+                                                                             s."Name"            AS stimmkreisname,
+                                                                             p."ParteiID"        AS parteiid,
+                                                                             p."Name"            AS parteiname,
+                                                                             count(e."ParteiID") AS zweitstimmen_ohne_kandidaten
+                                                                      FROM stimmkreis s
+                                                                               CROSS JOIN parteien p
+                                                                               LEFT JOIN zweite_stimme_ohne_kandidaten e
+                                                                                         ON e."ParteiID" = p."ParteiID" AND e."StimmkreisId" = s."StimmkreisId"
+                                                                      GROUP BY s."StimmkreisId", s."Name", p."ParteiID", p."Name"),
+     gesamt_stimmen_pro_partei_pro_stimmkreis AS (SELECT g1.stimmkreisid,
+                                                        g1.stimmkreisname,
+                                                        g1.parteiid,
+                                                        g1.parteiname,
+                                                        g1.erststimmen + g2.zweitstimmen + g3.zweitstimmen_ohne_kandidaten AS gesamt_stimmen
+                                                 FROM gesamt_erststimmen_pro_partei_pro_stimmkreis g1
+                                                          JOIN gesamt_zweitstimmen_pro_partei_pro_stimmkreis g2
+                                                               ON g1.stimmkreisid = g2.stimmkreisid AND g1.parteiid = g2.parteiid
+                                                          JOIN gesamt_zweitstimmen_ohne_kandidaten_pro_partei_pro_stimmkreis g3
+                                                               ON g2.stimmkreisid = g3.stimmkreisid AND g2.parteiid = g3.parteiid)
+SELECT stimmkreisid,
+       stimmkreisname,
+       parteiid,
+       parteiname,
+       gesamt_stimmen
+FROM gesamt_stimmen_pro_partei_pro_stimmkreis);
 
