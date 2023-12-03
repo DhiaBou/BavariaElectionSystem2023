@@ -34,6 +34,7 @@ database_url = "postgresql://username:password@localhost:5433/dbname"
 
 # Example vote counts
 
+
 def zweite_stimme_alloc(database_url, total_seats):
     vote_counts = get_vote_counts(database_url)
 
