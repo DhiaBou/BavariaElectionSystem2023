@@ -37,8 +37,8 @@ def get_value(value):
         return int(value[:-1]), False
 
 
-path = "C:/Users/daydo/PycharmProjects/Bayern_Wahl_dbs/server/src/database/scripts/csv/LTW2023_BEWERBER_UND_ABGEORDNETE_WkrNr_"
-for i in range(907, 899, -1):
+path = "/Users/omarbouattour/PycharmProjects/Bayern_Wahl_dbs/server/src/database/scripts/csv/LTW2023_BEWERBER_UND_ABGEORDNETE_WkrNr_"
+for i in range(907, 900, -1):
     print(i)
     file_path = path + str(i) + ".xls"
     xls = pd.ExcelFile(file_path)
@@ -90,12 +90,3 @@ for i in range(907, 899, -1):
                     db.bulk_save_objects(erststimmen)
                     db.bulk_save_objects(zweitstimmenohnekandidaten)
                     db.commit()
-
-with get_db() as db:
-    print("hh")
-    db.add_all(erststimmen)
-    print("hh")
-    db.add_all(zweitstimmen)
-    print("hh")
-    db.add_all(zweitstimmenohnekandidaten)
-    db.commit()

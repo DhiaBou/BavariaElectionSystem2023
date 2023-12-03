@@ -30,11 +30,13 @@ def allocate_seats_sainte_lague(vote_counts, total_seats):
 
 
 database_url = "postgresql://username:password@localhost:5433/dbname"
+
+
 # Example vote counts
-vote_counts_example = get_vote_counts(database_url)
 
+def zweite_stimme_alloc(database_url, total_seats):
+    vote_counts = get_vote_counts(database_url)
 
-# Allocate seats for the example vote counts
-total_seats = 89
-seat_allocation_result = allocate_seats_sainte_lague(vote_counts_example, total_seats)
-print(seat_allocation_result)
+    # Allocate seats for the example vote counts
+    seat_allocation_result = allocate_seats_sainte_lague(vote_counts, total_seats)
+    return seat_allocation_result

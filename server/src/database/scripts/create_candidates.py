@@ -12,7 +12,7 @@ with get_db() as db:
         party_name_id[l.kurzbezeichnung] = l.ParteiID
 
 
-path = "C:/Users/daydo/PycharmProjects/Bayern_Wahl_dbs/server/src/database/scripts/csv/kandidaten/LTW2023_GEWAEHLTE_BEWERBER_UND_LISTENNACHFOLGER_WkrNr_"
+path = "/Users/omarbouattour/PycharmProjects/Bayern_Wahl_dbs/server/src/database/scripts/csv/kandidaten/LTW2023_GEWAEHLTE_BEWERBER_UND_LISTENNACHFOLGER_WkrNr_"
 for i in range(901, 908, 1):
     file_path = path + str(i) + ".xls"
     xls = pd.ExcelFile(file_path)

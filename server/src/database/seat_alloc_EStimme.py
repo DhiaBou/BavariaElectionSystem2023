@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
-
 def get_direct_candidates(database_url):
     # Create an engine and bind it to a session
     engine = create_engine(database_url)
@@ -17,6 +16,7 @@ WITH CandidateVotes AS (
         Kandidaten."KandidatID",
         Kandidaten."Vorname",
         Kandidaten."Nachname",
+        Kandidaten."ParteiID",
         COUNT(Erste_Stimmzettel."KandidatID") AS Stimmenzahl
     FROM
         Erste_Stimmzettel
@@ -31,6 +31,7 @@ RankedCandidates AS (
         cv."KandidatID",
         cv."Vorname",
         cv."Nachname",
+        cv."ParteiID",
         Stimmenzahl,
         RANK() OVER (PARTITION BY cv."StimmkreisId" ORDER BY Stimmenzahl DESC) AS Rank
     FROM
@@ -43,6 +44,7 @@ RankedCandidates AS (
         rc."KandidatID",
         rc."Vorname",
         rc."Nachname",
+        rc."ParteiID",
         rc.Stimmenzahl
     FROM
         RankedCandidates rc
@@ -52,17 +54,19 @@ RankedCandidates AS (
         rc.Rank = 1
     )
 
-select * from direct_candidates"""
+select direct_candidates."ParteiID", count(*) as Votes from direct_candidates
+group by direct_candidates."ParteiID" """
 
     # Execute the query
     try:
-        direct_candidates = {}
+        votes_erste_stimme = {}
         results = session.execute(sa.text(sql))
-        index = 0
+
         for row in results:
-            direct_candidates[index] = row.KandidatID
-            index += 1
-        return direct_candidates
+            print(row)
+            votes_erste_stimme[row[0]] = row[1]
+
+        return votes_erste_stimme
     except Exception as e:
         print(f"Error occurred: {e}")
     finally:
@@ -74,3 +78,4 @@ database_url = "postgresql://username:password@localhost:5433/dbname"
 
 # Get vote counts
 direct_candidates = get_direct_candidates(database_url)
+print(direct_candidates)

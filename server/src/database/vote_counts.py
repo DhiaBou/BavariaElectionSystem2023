@@ -14,16 +14,16 @@ def get_vote_counts(database_url):
     SELECT
         COUNT(*) AS TotalSecondVotes
     FROM
-        Stimmzettel
+        zweite_stimmzettel
 ),
 PartyVotes AS (
     SELECT
         p."ParteiID",
         COUNT(*) AS "Votes"
     FROM
-        Stimmzettel s
+        zweite_stimmzettel s
     JOIN
-        Kandidaten k ON s."Zweitstimme" = k."KandidatID"
+        Kandidaten k ON s."KandidatID" = k."KandidatID"
     JOIN
         Parteien p ON k."ParteiID" = p."ParteiID"
     GROUP BY
@@ -39,18 +39,16 @@ ValidParties AS (
         (pv."Votes" / (SELECT TotalSecondVotes FROM TotalVotes)) * 100 >= 5 -- Assuming a 5% threshold
 )
 SELECT
-    p."ParteiID",
+    p."ParteiID", p."Name",
     COUNT(*) AS Votes
 FROM
-    Stimmzettel s
+    zweite_stimmzettel s
 JOIN
-    Kandidaten k ON s."Zweitstimme" = k."KandidatID"
+    Kandidaten k ON s."KandidatID" = k."KandidatID"
 JOIN
     Parteien p ON k."ParteiID" = p."ParteiID"
 GROUP BY
     p."ParteiID"
-HAVING
-    (COUNT(*) / (SELECT COUNT(*) FROM Stimmzettel)) * 100 >= 5 -- Assuming a 5% threshold
 
 """
 
@@ -58,8 +56,11 @@ HAVING
     try:
         vote_counts = {}
         results = session.execute(sa.text(sql))
+
         for row in results:
-            vote_counts[row.ParteiID] = row.Votes
+            print(row)
+            vote_counts[row[0]] = row[2]
+
         return vote_counts
     except Exception as e:
         print(f"Error occurred: {e}")
