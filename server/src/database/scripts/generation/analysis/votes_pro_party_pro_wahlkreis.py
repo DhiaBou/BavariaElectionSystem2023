@@ -1,7 +1,8 @@
 from sqlalchemy.sql import text, func
 
 from database.models.models import Wahlkreis, Stimmkreis
-from database.Überhangs_ausgleich_mandaten import allocate_final_seats_in_wahlkreis
+from database.Überhangs_ausgleich_mandaten import allocate_final_seats_in_wahlkreis, \
+    allocate_final_seats_in_wahlkreis_nico
 from src.database.database import get_db
 
 
@@ -130,4 +131,6 @@ for wahlkreis in wahlkreise_dict:
 
     direct_candidates = wahlkreise_dict[wahlkreis]["direct_candidates_dict"]
     nb_seats = wahlkreise_dict[wahlkreis]["nb_seats"]
-    x = allocate_final_seats_in_wahlkreis(votes, nb_seats, direct_candidates)
+    x = allocate_final_seats_in_wahlkreis_nico(votes, nb_seats, direct_candidates)
+    print(wahlkreis)
+    print(x)
