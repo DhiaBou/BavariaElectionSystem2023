@@ -57,11 +57,7 @@ for i in range(907, 900, -1):
                         if flag:
                             print("1++" + str(value))
                             for k in range(value):
-                                zweitstimmen.append(
-                                    Zweite_Stimmzettel(
-                                        KandidatID=id, StimmkreisId=stimmkreis
-                                    )
-                                )
+                                zweitstimmen.append(Zweite_Stimmzettel(KandidatID=id, StimmkreisId=stimmkreis))
                             with get_db() as db:
                                 db.bulk_save_objects(zweitstimmen)
                                 db.commit()
@@ -70,11 +66,7 @@ for i in range(907, 900, -1):
                         else:
                             print("2++" + str(value))
                             for k in range(value):
-                                erststimmen.append(
-                                    Erste_Stimmen(
-                                        KandidatID=id, StimmkreisId=stimmkreis
-                                    )
-                                )
+                                erststimmen.append(Erste_Stimmen(KandidatID=id, StimmkreisId=stimmkreis))
 
                     else:
                         print("--" + str(value))

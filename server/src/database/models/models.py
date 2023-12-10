@@ -32,6 +32,12 @@ class Stimmkreis(Base):
     WahlkreisId = Column(Integer, ForeignKey("wahlkreis.WahlkreisId"))
 
 
+class Abgeordnete(Base):
+    __tablename__ = "abgeordnete"
+    KandidatID = Column(Integer, ForeignKey("kandidaten.KandidatID"), primary_key=True)
+    Erststimme = Column(Boolean, unique=False, default=True)
+
+
 class Kandidaten(Base):
     __tablename__ = "kandidaten"
     KandidatID = Column(Integer, primary_key=True)
