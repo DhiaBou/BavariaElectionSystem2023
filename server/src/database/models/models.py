@@ -38,6 +38,20 @@ class Abgeordnete(Base):
     Erststimme = Column(Boolean, unique=False, default=True)
 
 
+class Ueberhangsmandate(Base):
+    __tablename__ = "ueberhangsmandate"
+    Id = Column(Integer, primary_key=True)
+    WahlkreisId = Column(Integer, ForeignKey("wahlkreis.WahlkreisId"))
+    ParteiID = Column(Integer, ForeignKey("parteien.ParteiID"))
+
+
+class Ausgleichsmandate(Base):
+    __tablename__ = "ausgleichsmandate"
+    Id = Column(Integer, primary_key=True)
+    WahlkreisId = Column(Integer, ForeignKey("wahlkreis.WahlkreisId"))
+    ParteiID = Column(Integer, ForeignKey("parteien.ParteiID"))
+
+
 class Kandidaten(Base):
     __tablename__ = "kandidaten"
     KandidatID = Column(Integer, primary_key=True)

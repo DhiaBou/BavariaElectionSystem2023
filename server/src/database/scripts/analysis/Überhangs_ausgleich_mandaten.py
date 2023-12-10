@@ -28,15 +28,16 @@ def sainte_lague_iterative_dict(votes, total_seats):
 
 def allocate_final_seats_in_wahlkreis(votes, total_seats, erste_stimme):
     erste_verteilung = sainte_lague_iterative_dict(votes, total_seats)
+    final_verteung = erste_verteilung.copy()
     divisor = -1
-    for party in erste_verteilung:
-        if erste_stimme[party] > erste_verteilung[party]:
+    for party in final_verteung:
+        if erste_stimme[party] > final_verteung[party]:
             divisor = votes[party] / (erste_stimme[party] - 0.5)
             print(divisor)
     if divisor != -1:
         allocation = {parteiID: 0 for parteiID in votes.keys()}
         for parteiID in votes.keys():
             allocation[parteiID] = votes[parteiID] / divisor
-            erste_verteilung[parteiID] = round(allocation[parteiID])
+            final_verteung[parteiID] = round(allocation[parteiID])
 
-    return erste_verteilung
+    return final_verteung, erste_verteilung

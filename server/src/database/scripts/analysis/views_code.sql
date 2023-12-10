@@ -1,4 +1,4 @@
-create view gesamt_stimmen_pro_partei_pro_wahlkreis_view as (WITH gesamt_erststimmen_pro_partei_pro_wahlkreis AS (SELECT w."WahlkreisId"       AS wahlkreisid,
+create MATERIALIZED  view gesamt_stimmen_pro_partei_pro_wahlkreis_view as (WITH gesamt_erststimmen_pro_partei_pro_wahlkreis AS (SELECT w."WahlkreisId"       AS wahlkreisid,
                                                             w."Name"              AS wahlkreisname,
                                                             p."ParteiID"          AS parteiid,
                                                             p."Name"              AS parteiname,
@@ -49,7 +49,7 @@ SELECT wahlkreisid,
        parteiname,
        gesamt_stimmen
 FROM gesamt_stimmen_pro_partei_pro_wahlkreis);
-create view anteil_over_five_percent as (WITH
+create MATERIALIZED  view anteil_over_five_percent as (WITH
      totalvotes AS (SELECT g.wahlkreisid,
                            sum(g.gesamt_stimmen) AS sum
                     FROM gesamt_stimmen_pro_partei_pro_wahlkreis_view g
@@ -71,7 +71,7 @@ SELECT wahlkreisid,
 FROM anteil);
 
 
-create view direct_candidates as ( with
+create MATERIALIZED view direct_candidates as ( with
      candidatevotes AS (SELECT erste_stimmzettel."StimmkreisId",
                                kandidaten."KandidatID",
                                kandidaten."Vorname",
@@ -123,7 +123,7 @@ SELECT "WahlkreisId",
        "ParteiID",
        stimmenzahl
 FROM direct_candidates);
-create view gesamt_stimmen_pro_partei_pro_stimmkreis_view as (WITH gesamt_erststimmen_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"       AS stimmkreisid,
+create MATERIALIZED view gesamt_stimmen_pro_partei_pro_stimmkreis_view as (WITH gesamt_erststimmen_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"       AS stimmkreisid,
                                                             s."Name"              AS stimmkreisname,
                                                             p."ParteiID"          AS parteiid,
                                                             p."Name"              AS parteiname,
@@ -159,7 +159,9 @@ create view gesamt_stimmen_pro_partei_pro_stimmkreis_view as (WITH gesamt_erstst
                                                         g1.stimmkreisname,
                                                         g1.parteiid,
                                                         g1.parteiname,
-                                                        g1.erststimmen + g2.zweitstimmen + g3.zweitstimmen_ohne_kandidaten AS gesamt_stimmen
+                                                        g1.erststimmen + g2.zweitstimmen + g3.zweitstimmen_ohne_kandidaten AS gesamt_stimmen,
+                                                        g1.erststimmen,
+                                                        g2.zweitstimmen + g3.zweitstimmen_ohne_kandidaten as zweite_stimme
                                                  FROM gesamt_erststimmen_pro_partei_pro_stimmkreis g1
                                                           JOIN gesamt_zweitstimmen_pro_partei_pro_stimmkreis g2
                                                                ON g1.stimmkreisid = g2.stimmkreisid AND g1.parteiid = g2.parteiid
@@ -169,9 +171,11 @@ SELECT stimmkreisid,
        stimmkreisname,
        parteiid,
        parteiname,
-       gesamt_stimmen
+       gesamt_stimmen,
+       erststimmen,
+       zweite_stimme
 FROM gesamt_stimmen_pro_partei_pro_stimmkreis);
-create view kandidat_gasammt_stimmen as (
+create MATERIALIZED  view kandidat_gasammt_stimmen as (
 with erste_stimme as (
 select k."KandidatID", count(*) as count from kandidaten k ,erste_stimmzettel e where e."KandidatID" = k."KandidatID" group by k."KandidatID"
        )    ,
