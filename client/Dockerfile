@@ -15,8 +15,5 @@ COPY ./client /app
 # Expose port 3000 for the Node.js application
 EXPOSE 3000
 
-# Build the application
-RUN npm run build
-
 # Command to start the application
 CMD ["npm", "start"]

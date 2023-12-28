@@ -21,6 +21,6 @@ select g.stimmkreisid,
        ROUND(g.gesamt_stimmen * 100.00 / a.sum, 2) AS percentage,
        COALESCE((SELECT CONCAT(d."Nachname", ', ', d."Vorname")
               FROM direct_candidates d
-              WHERE d."StimmkreisId" = a.stimmkreisid AND d."ParteiID" = g.parteiid), 'none') AS gewählte_kandidaten
+              WHERE d."StimmkreisId" = a.stimmkreisid AND d."ParteiID" = g.parteiid), 'none') AS gewaehlte_kandidaten
 from gesamt_stimmen_pro_partei_pro_stimmkreis_view g, anzahl_stimmen_pro_stimmkreis a, wahlbeteiligung w
 where a.stimmkreisid = g.stimmkreisid and w."StimmkreisId" = a.stimmkreisid;

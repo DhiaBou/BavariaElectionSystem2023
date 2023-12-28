@@ -18,6 +18,9 @@ black = "^23.11.0"
 matplotlib = "^3.8.2"
 
 
+[tool.poetry.group.dev.dependencies]
+setuptools = "^69.0.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

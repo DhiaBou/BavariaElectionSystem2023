@@ -1,1 +1,1 @@
-select k."ParteiID", count(*) from   abgeordnete a, kandidaten k where a."KandidatID" = k."KandidatID" group by k."ParteiID";
+select p."kurzbezeichnung", count(*) from   abgeordnete a, kandidaten k, parteien p where a."KandidatID" = k."KandidatID" and p."ParteiID"=k."ParteiID" group by p."kurzbezeichnung";

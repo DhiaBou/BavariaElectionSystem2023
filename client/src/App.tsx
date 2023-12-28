@@ -4,6 +4,12 @@ import './App.css';
 import Button from '@mui/material/Button';
 
 import { List, ListItem, ListItemText } from '@material-ui/core';
+import MyPieChart from "./torten";
+import ProductList from "./list";
+import ProductListt from "./q3";
+import Listq4 from "./q4";
+import Listq5 from "./q5";
+import VotingComponent from "./vote";
 
 const MyComponent = () => {
     const [items, setItems] = useState([]);
@@ -51,7 +57,16 @@ function App() {
       Click
     </Button>
         </a>
-          <MyComponent/>
+          <>
+            <MyComponent/>
+            <MyPieChart/>
+            <ProductList/>
+            <ProductListt/>
+            <Listq4/>
+            <Listq5/>
+            <VotingComponent/>
+
+          </>
       </header>
     </div>
   );

@@ -185,6 +185,9 @@ select k."KandidatID", count(*) as count from kandidaten k ,zweite_stimmzettel e
 select k.*, e2.count + e2.count as gesammt_stimmen from kandidaten k ,erste_stimme e1, zweite_stimme e2 where e1."KandidatID" = k."KandidatID" and e2."KandidatID" = k."KandidatID" order by gesammt_stimmen desc , "Nachname" asc
        );
                                                                                                              
+create MATERIALIZED  view erst_stimmzettel as (
+select distinct "KandidatID","StimmkreisId" from erste_stimmzettel);
+
 
 
 

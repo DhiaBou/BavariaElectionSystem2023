@@ -23,7 +23,10 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/app  # Sync local client directory with /app in the container
+      - ./client/node_modules  # Sync local client directory with /app in the container
     restart: on-failure  # Restart policy for development with file watching
+    environment:
+     - CHOKIDAR_USEPOLLING=true
 
   db:
     image: postgres
