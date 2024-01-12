@@ -1,8 +1,9 @@
 from sqlalchemy import text
 
 # Replace 'your_database_url' with the actual database connection URL
-from src.database.database import get_db
 from pathlib import Path
+
+from database.database import get_db
 
 
 def q1():

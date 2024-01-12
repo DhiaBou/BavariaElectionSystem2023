@@ -36,3 +36,93 @@
     transform: rotate(360deg);
   }
 }
+/* Existing styles... */
+
+/* Styles for buttons */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4fa0cb;
+}
+
+/* Adjust the component container if necessary */
+.component-container {
+  margin-top: 20px;
+  /* Add any specific styling that your components might need */
+}
+/* This is the container for the entire voting form area */
+.voting-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  min-height: 100vh; /* Ensure it takes at least the full viewport height */
+}
+
+/* This can be used to style the individual form row, if needed */
+
+
+/* Style for the home button if it's not aligned properly */
+.home-button {
+  display: block; /* Change from inline to block if needed */
+  margin: 20px auto; /* Auto margins on the sides will center it */
+}
+/* Align the container for input and button */
+.form-row {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: space-between; /* Spaces out items */
+  margin-bottom: 20px; /* Add some space below each row */
+}
+
+/* Input field styling */
+.input-field {
+  flex-grow: 1; /* Allows the input fields to grow and fill the space */
+  margin-right: 10px; /* Adds a margin to the right of the input fields */
+}
+
+/* Button styling */
+.submit-button {
+  white-space: nowrap; /* Prevents the text inside the button from wrapping */
+  padding: 10px 15px; /* Adjust padding as needed */
+  /* Other button styles */
+}
+
+.voting-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.vote-section {
+  width: 100%;
+  max-width: 500px;
+  background-color: #f5f5f5;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Adjust the minmax values as needed */
+  gap: 10px;
+}
+
+.candidate-cell {
+  display: flex;
+  align-items: center;
+}
+
+.submit-button {
+  margin-top: 20px;
+}

@@ -36,38 +36,37 @@ const MyComponent = () => {
     );
 }
 
-
-
 function App() {
+  const [view, setView] = useState('home'); // Changed to 'home' for the initial view
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-    <Button variant="contained" color="primary">
-      Click
-    </Button>
-        </a>
-          <>
-            <MyComponent/>
-            <MyPieChart/>
-            <ProductList/>
-            <ProductListt/>
-            <Listq4/>
-            <Listq5/>
-            <VotingComponent/>
+    <div className="App-header">
+      {view === 'home' && (
+        <>
+          <img src={logo} className="App-logo" alt="logo" /> {/* Logo */}
+          <button onClick={() => setView('analysis')}>Analysis</button>
+          <button onClick={() => setView('voting')}>Voting</button>
+        </>
+      )}
 
-          </>
-      </header>
+      {view === 'analysis' && (
+        <>
+          <button onClick={() => setView('home')}>Home</button> {/* Home Button */}
+          <MyComponent />
+          <MyPieChart />
+          <ProductList />
+          <ProductListt />
+          <Listq4 />
+          <Listq5 />
+        </>
+      )}
+
+      {view === 'voting' && (
+        <>
+          <button onClick={() => setView('home')}>Home</button> {/* Home Button */}
+          <VotingComponent />
+        </>
+      )}
     </div>
   );
 }

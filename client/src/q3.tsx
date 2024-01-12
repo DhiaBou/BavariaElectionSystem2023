@@ -76,6 +76,7 @@ const ProductList = () => {
 
     // Handle selection change
     const handleSelectionChange = (event: SelectChangeEvent<string>) => {
+
         setSelectedProductId(event.target.value as string);
     };
 
@@ -94,7 +95,7 @@ const filteredTimestamps = products
                     inputProps={{ 'aria-label': 'Without label' }}
                 >
                     <MenuItem value="" disabled>
-                        Select a Product ID
+                        Select a Stimmkreis
                     </MenuItem>
                     {productIds.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
