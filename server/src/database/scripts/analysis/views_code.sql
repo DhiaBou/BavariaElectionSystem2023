@@ -188,6 +188,36 @@ select k.*, e2.count + e2.count as gesammt_stimmen from kandidaten k ,erste_stim
 create MATERIALIZED  view erst_stimmzettel as (
 select distinct "KandidatID","StimmkreisId" from erste_stimmzettel);
 
+create MATERIALIZED VIEW  Wahlergebnisse2023 as (
+with seats_party as (
+    select p."ParteiID", count(*) as seats from   abgeordnete a, kandidaten k, parteien p where a."KandidatID" = k."KandidatID" and p."ParteiID"=k."ParteiID" group by p."ParteiID"
+
+),
+     anzahl_direct_candidates_pro_party as (
+         select d."ParteiID" , count(*) as anz_direct_candidates
+         from direct_candidates d
+         group by d."ParteiID"
+     )
+
+,
+    total_votes as (
+        select sum(gesamt_stimmen) as total
+        from gesamt_stimmen_pro_partei_pro_stimmkreis_view
+    ),
+without_percentage as (select g.parteiid, parteiname,coalesce(seats,0) as seats , coalesce(anz_direct_candidates, 0) as direct_candidates, sum(gesamt_stimmen) as Gesamt_stimmen , sum(erststimmen) as Erststimmen, sum(zweite_stimme)as Zweitestimmen
+    from  gesamt_stimmen_pro_partei_pro_stimmkreis_view g left outer join seats_party s on
+     g.parteiid = s."ParteiID" left outer join anzahl_direct_candidates_pro_party a on a."ParteiID" = s."ParteiID"
+        group by g.ParteiID, parteiname,seats, direct_candidates)
+select w.*, Round(w.gesamt_stimmen / total, 4) * 100 as Vote_percentage
+from without_percentage w, total_votes
+                                                );
+
+
+create MATERIALIZED VIEW  Wahlergebnisse_Veränderung_2018_zu_2023 as (
+select w.parteiid, w.parteiname, w.erststimmen, w.zweitestimmen, w.gesamt_stimmen , w.vote_percentage, (w.vote_percentage - w_old.stimmen_prozent)as Veränderung_gesamt_stimmen,w.seats as Anzahl_Sitze, (w.seats - w_old.sitze)as Veränderung_Anzahl_sitze
+from wahlergebnisse2023 w left outer join wahlergebnisse2018 w_old on w.parteiid = w_old.parteiid
+
+                                                                     )
 
 
 
