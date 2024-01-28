@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, FormControl, List, ListItem, SelectChangeEvent } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {FormControl, List, ListItem, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 
 interface Product {
     kandidat: string;
     kurzbezeichnung: string; // or Date if your timestamps are Date objects
 }
 
-const ProductList = () => {
+const Q2 = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProductId, setSelectedProductId] = useState('');
 
@@ -36,7 +36,7 @@ const ProductList = () => {
                     value={selectedProductId}
                     onChange={handleSelectionChange}
                     displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
+                    inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
                         Select a Product ID
@@ -46,7 +46,7 @@ const ProductList = () => {
                     ))}
                 </Select>
             </FormControl>
-            <List>
+            <List style={{maxHeight: '50vh', overflow: 'auto'}}>
                 {filteredTimestamps.map((product, index) => (
                     <ListItem key={index}>{product.kandidat}</ListItem>
                 ))}
@@ -55,4 +55,4 @@ const ProductList = () => {
     );
 };
 
-export default ProductList;
+export default Q2;

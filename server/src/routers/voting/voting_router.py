@@ -74,17 +74,14 @@ async def submit_vote(vote: Vote):
             db.add(zweite_stimme)
 
             # Commit the changes
-            db.commit()
+            #            db.commit()
+
             return {"message": "Vote received"}
 
         except Exception as e:
             # In case of any exception
             db.rollback()
             return {"message": f"An error occurred: {e}"}
-
-        finally:
-            # Close the session
-            db.close()
 
 
 @voting_router.post("/first_vote")

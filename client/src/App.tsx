@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Button from '@mui/material/Button';
 
-import { List, ListItem, ListItemText } from '@material-ui/core';
-import MyPieChart from "./torten";
-import ProductList from "./list";
-import ProductListt from "./q3";
-import Listq4 from "./q4";
-import Listq5 from "./q5";
+import {List, ListItem, ListItemText} from '@material-ui/core';
+import Q3 from "./Q3";
+import Q4 from "./Q4";
+import Q5 from "./Q5";
 import VotingComponent from "./vote";
+import Q2 from "./Q2";
+import ParlementVerteilung from "./torten";
+import Vergleich from "./Vergleich";
 
-const MyComponent = () => {
+const BackendHealthComponent = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8000/')
+        fetch('http://localhost:8000/wahlkreis')
             .then(response => response.json())
             .then(data => setItems(data))
             .catch(error => console.error("There was an error!", error));
@@ -29,7 +29,7 @@ const MyComponent = () => {
         <List>
             {items.map((item, index) => (
                 <ListItem key={index}>
-                    <ListItemText primary={item} />
+                    <ListItemText primary={item}/>
                 </ListItem>
             ))}
         </List>
@@ -37,53 +37,61 @@ const MyComponent = () => {
 }
 
 function App() {
-  const [view, setView] = useState('home'); // Changed to 'home' for the initial view
+    const [view, setView] = useState('home'); // Changed to 'home' for the initial view
 
-  return (
-    <div className="App-header">
-      {view === 'home' && (
-        <>
-          <img src={logo} className="App-logo" alt="logo" /> {/* Logo */}
-          <button onClick={() => setView('analysis')}>Analysis</button>
-          <button onClick={() => setView('voting')}>Voting</button>
-        </>
-      )}
+    return (
+        <div className="App-header">
+            {view === 'home' && (
+                <>
+                    <img src={logo} className="App-logo" alt="logo"/> {/* Logo */}
+                    <button onClick={() => setView('analysis')}>Analysis</button>
+                    <button onClick={() => setView('voting')}>Voting</button>
+                </>
+            )}
 
-      {view === 'analysis' && (
-        <>
-          <button onClick={() => setView('home')}>Home</button> {/* Home Button */}
-          <MyComponent />
-                     <div style={{ height: '20px' }} />
-<h5>Pie Chart</h5>
-          <MyPieChart />
-                     <div style={{ height: '20px' }} />
-<h5>Q2</h5>
+            {view === 'analysis' && (
+                <>
+                    <button onClick={() => setView('home')}>Home</button>
+                    {/* Home Button */}
+                    <BackendHealthComponent/>
+                    <div style={{height: '20px'}}/>
 
-          <ProductList />
-                     <div style={{ height: '20px' }} />
-<h5>Q3</h5>
+                    <h5>Pie Chart</h5>
+                    <ParlementVerteilung/>
+                    <div style={{height: '20px'}}/>
 
-          <ProductListt />
-                     <div style={{ height: '20px' }} />
-<h5>Q4</h5>
+                    <h5>Q2</h5>
+                    <Q2/>
+                    <div style={{height: '20px'}}/>
 
-          <Listq4 />
-                     <div style={{ height: '20px' }} />
-<h5>Q5</h5>
+                    <h5>Q3</h5>
+                    <Q3/>
+                    <div style={{height: '20px'}}/>
 
-          <Listq5 />         <div style={{ height: '20px' }} />
+                    <h5>Q4</h5>
+                    <Q4/>
+                    <div style={{height: '20px'}}/>
 
-        </>
-      )}
+                    <h5>Q5</h5>
+                    <Q5/>
+                    <div style={{height: '20px'}}/>
 
-      {view === 'voting' && (
-        <>
-          <button onClick={() => setView('home')}>Home</button> {/* Home Button */}
-          <VotingComponent />
-        </>
-      )}
-    </div>
-  );
+                    <h5>Vergleich</h5>
+                    <Vergleich/>
+                    <div style={{height: '20px'}}/>
+
+                </>
+            )}
+
+            {view === 'voting' && (
+                <>
+                    <button onClick={() => setView('home')}>Home</button>
+                    {/* Home Button */}
+                    <VotingComponent/>
+                </>
+            )}
+        </div>
+    );
 }
 
 export default App;

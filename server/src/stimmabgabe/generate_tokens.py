@@ -34,6 +34,7 @@ def store_token_in_csv(token, file_name="token.csv"):
             writer.writerow(["Token"])  # Write header if file does not exist
         writer.writerow([token])
 
+
 def is_token_valid(user_id, stimmkreis, file_name="token.csv"):
     """
     Check if a token is valid. A token is valid if the file of tokens does not exist,
@@ -54,6 +55,7 @@ def is_token_valid(user_id, stimmkreis, file_name="token.csv"):
                 if token in row:
                     return False
     return True
+
 
 def input_tokens():
     # Get user input

@@ -1,6 +1,6 @@
-import { Grid } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
+import {Grid} from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
 
 interface DataItem {
@@ -16,7 +16,8 @@ interface ChartData {
         backgroundColor: string[];
     }[];
 }
-const MyPieChart = () => {
+
+const ParlementVerteilung = () => {
     const [chartData, setChartData] = useState<ChartData>({
         labels: [],
         datasets: [{
@@ -27,13 +28,13 @@ const MyPieChart = () => {
 
     // Array of colors for each party
     const partyColors = [
-    'rgba(255, 193, 7, 0.6)',    // Vibrant Orange
-    'rgba(76, 175, 80, 0.6)',    // Calming Green
-    'rgba(156, 39, 176, 0.6)',   // Royal Purple
-    'rgba(255, 87, 34, 0.6)',    // Fiery Red-Orange
-    'rgba(33, 150, 243, 0.6)'    // Soothing Blue
-    // ... Add more colors for more parties
-];
+        'rgba(255, 193, 7, 0.6)',    // Vibrant Orange
+        'rgba(76, 175, 80, 0.6)',    // Calming Green
+        'rgba(156, 39, 176, 0.6)',   // Royal Purple
+        'rgba(255, 87, 34, 0.6)',    // Fiery Red-Orange
+        'rgba(33, 150, 243, 0.6)'    // Soothing Blue
+        // ... Add more colors for more parties
+    ];
 
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/q1')
@@ -59,11 +60,11 @@ const MyPieChart = () => {
 
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Pie data={chartData} width={80} height={80} />
+            <Grid item xs={4} style={{display: 'flex', justifyContent: 'center'}}>
+                <Pie data={chartData} width={80} height={80}/>
             </Grid>
         </Grid>
     );
 }
 
-export default MyPieChart;
+export default ParlementVerteilung;
