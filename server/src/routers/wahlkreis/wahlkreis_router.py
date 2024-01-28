@@ -1,6 +1,14 @@
 from fastapi import APIRouter
 
-from database.scripts.analysis.B6.queries import q1, q2, q3, q4, q5, q6_winners, q6_losers
+from database.scripts.analysis.B6.queries import (
+    q1,
+    q2,
+    q3,
+    q4,
+    q5,
+    q6_winners,
+    q6_losers,
+)
 
 wahlkreis_router = APIRouter(
     prefix="/wahlkreis",

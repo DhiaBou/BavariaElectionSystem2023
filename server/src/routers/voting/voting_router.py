@@ -57,19 +57,20 @@ async def get_candidates(voter_id: str, code: str):
 
 @voting_router.post("/submit_vote")
 async def submit_vote(vote: Vote):
-
     # Create a new session
     with get_db() as db:
-
         try:
-
             # Assuming 'vote' has attributes like 'first_vote', 'second_vote', etc.
             # Update Erste_Stimmen
-            erste_stimme = Erste_Stimmen(KandidatID=vote.first_vote, StimmkreisId=vote.code)
+            erste_stimme = Erste_Stimmen(
+                KandidatID=vote.first_vote, StimmkreisId=vote.code
+            )
             db.add(erste_stimme)
 
             # Update Zweite_Stimmen
-            zweite_stimme = Zweite_Stimmzettel(KandidatID=vote.second_vote, StimmkreisId=vote.code)
+            zweite_stimme = Zweite_Stimmzettel(
+                KandidatID=vote.second_vote, StimmkreisId=vote.code
+            )
             db.add(zweite_stimme)
 
             # Commit the changes
@@ -88,12 +89,13 @@ async def submit_vote(vote: Vote):
 
 @voting_router.post("/first_vote")
 async def handle_first_vote(vote: FirstVote):
-
     # Create a new session
     with get_db() as db:
         try:
             # Update Erste_Stimmen with the first vote
-            erste_stimme = Erste_Stimmen(KandidatID=vote.first_vote, StimmkreisId=vote.code)
+            erste_stimme = Erste_Stimmen(
+                KandidatID=vote.first_vote, StimmkreisId=vote.code
+            )
             db.add(erste_stimme)
 
             # Commit the changes
@@ -116,7 +118,9 @@ async def handle_second_vote(vote: SecondVote):
     with get_db() as db:
         try:
             # Update Zweite_Stimmen with the second vote
-            zweite_stimme = Zweite_Stimmzettel(KandidatID=vote.second_vote, StimmkreisId=vote.code)
+            zweite_stimme = Zweite_Stimmzettel(
+                KandidatID=vote.second_vote, StimmkreisId=vote.code
+            )
             db.add(zweite_stimme)
 
             # Commit the changes

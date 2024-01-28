@@ -1,4 +1,10 @@
-
+CREATE TABLE Wahlergebnisse2018 (
+    ParteiID int,
+    Partei varchar(255),
+    Stimmen_Prozent decimal(4,2),
+    Sitze int,
+    Direktmandate int
+);
 
 insert into Wahlergebnisse2018 (ParteiID, Partei, Stimmen_Prozent, Sitze, Direktmandate)
 Values

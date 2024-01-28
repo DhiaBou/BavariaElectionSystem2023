@@ -1,6 +1,13 @@
 from sqlalchemy.sql import text
-from database.models.models import Wahlkreis, Abgeordnete, Ueberhangsmandate, Ausgleichsmandate
-from database.scripts.analysis.Überhangs_ausgleich_mandaten import allocate_final_seats_in_wahlkreis
+from database.models.models import (
+    Wahlkreis,
+    Abgeordnete,
+    Ueberhangsmandate,
+    Ausgleichsmandate,
+)
+from database.scripts.analysis.Überhangs_ausgleich_mandaten import (
+    allocate_final_seats_in_wahlkreis,
+)
 from src.database.database import get_db
 
 
@@ -58,30 +65,53 @@ def allocate_seats(wahlkreise_dict):
     ueberhangs_mandate = []
     ausgleichmandate = []
     for wahlkreis, data in wahlkreise_dict.items():
-        direct_candidates_count = {party: data["direct_candidates"].count(party) for party in data["parties"]}
+        direct_candidates_count = {
+            party: data["direct_candidates"].count(party) for party in data["parties"]
+        }
         allocated_seats, erste_verteilung = allocate_final_seats_in_wahlkreis(
             data["parties"], data["nb_seats"], direct_candidates_count
         )
 
         for party, allocated_seat_count in allocated_seats.items():
             if direct_candidates_count[party] > erste_verteilung[party]:
-                ueberhangs_mandate += [(wahlkreis, party)] * (direct_candidates_count[party] - erste_verteilung[party])
+                ueberhangs_mandate += [(wahlkreis, party)] * (
+                    direct_candidates_count[party] - erste_verteilung[party]
+                )
             elif allocated_seat_count > erste_verteilung[party]:
-                ausgleichmandate += [(wahlkreis, party)] * (allocated_seat_count - erste_verteilung[party])
+                ausgleichmandate += [(wahlkreis, party)] * (
+                    allocated_seat_count - erste_verteilung[party]
+                )
             remaining_seats = allocated_seat_count - direct_candidates_count[party]
             for kandidat in kandidaten_gesammt_stimmen:
                 if should_allocate_seat(
-                    wahlkreis, party, kandidat, kandidaten_erstestimme, kandidaten_zweitestimme, remaining_seats
+                    wahlkreis,
+                    party,
+                    kandidat,
+                    kandidaten_erstestimme,
+                    kandidaten_zweitestimme,
+                    remaining_seats,
                 ):
                     kandidaten_zweitestimme.append(kandidat[0])
                     remaining_seats -= 1
                     if remaining_seats == 0:
                         break
 
-    return kandidaten_erstestimme, kandidaten_zweitestimme, ueberhangs_mandate, ausgleichmandate
+    return (
+        kandidaten_erstestimme,
+        kandidaten_zweitestimme,
+        ueberhangs_mandate,
+        ausgleichmandate,
+    )
 
 
-def should_allocate_seat(wahlkreis, party, kandidat, kandidaten_erstestimme, kandidaten_zweitestimme, remaining_seats):
+def should_allocate_seat(
+    wahlkreis,
+    party,
+    kandidat,
+    kandidaten_erstestimme,
+    kandidaten_zweitestimme,
+    remaining_seats,
+):
     return (
         kandidat[0] // 10000 == wahlkreis
         and kandidat[3] == party
@@ -109,6 +139,8 @@ def save_uberhangs_ausgleichs_mandate(ueberhangs_mandate, ausgleichmandate):
 
 
 wahlkreise_dict = process_wahlkreise()
-erstestimme, zweitestimme, ueberhangs_mandate, ausgleichmandate = allocate_seats(wahlkreise_dict)
+erstestimme, zweitestimme, ueberhangs_mandate, ausgleichmandate = allocate_seats(
+    wahlkreise_dict
+)
 save_allocated_seats(erstestimme, zweitestimme)
 save_uberhangs_ausgleichs_mandate(ueberhangs_mandate, ausgleichmandate)

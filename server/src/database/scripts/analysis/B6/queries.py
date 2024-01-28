@@ -39,6 +39,22 @@ def q2():
     return result_list
 
 
+def diffference_2023_2018():
+    with open(Path(__file__).parent / "difference_2023_2018.sql", "r") as file:
+        query = file.read()
+
+    with get_db() as db:
+        result = db.execute(text(query))
+
+        # Fetch column names
+        column_names = result.keys()
+
+        # Fetch all rows and convert them to dictionaries
+        rows = result.fetchall()
+        result_list = [dict(zip(column_names, row)) for row in rows]
+    return result_list
+
+
 def q3():
     with open(Path(__file__).parent / "q3.sql", "r") as file:
         query = file.read()
@@ -127,7 +143,9 @@ def get_stimmzettel(stimmkreis):
         result = db.execute(text(query)).all()
 
         result_list = [
-            row[1] + " / " + str(row[2]) + " / " + row[0] for row in result if int(row[2]) == int(stimmkreis)
+            row[1] + " / " + str(row[2]) + " / " + row[0]
+            for row in result
+            if int(row[2]) == int(stimmkreis)
         ]
     return result_list
 
@@ -140,7 +158,9 @@ def get_zweit_stimmzettel(stimmkreis):
         result = db.execute(text(query)).all()
 
         result_list = [
-            row[1] + " / " + row[0] for row in result if (row[2] - 9000000) // 10000 == int(stimmkreis) // 100
+            row[1] + " / " + row[0]
+            for row in result
+            if (row[2] - 9000000) // 10000 == int(stimmkreis) // 100
         ]
         result_list += list(set(row[1] for row in result))
     return sorted(result_list)
