@@ -90,6 +90,7 @@ async def handle_first_vote(vote: FirstVote):
 
             # Commit the changes
             db.commit()
+            remove_token_from_csv(vote.token)
             return {"message": "First vote received"}
 
         except Exception as e:
@@ -121,6 +122,7 @@ async def handle_second_vote(vote: SecondVote):
         except Exception as e:
             # In case of any exception
             db.rollback()
+            remove_token_from_csv(vote.token)
             return {"message": f"An error occurred: {e}"}
 
         finally:
