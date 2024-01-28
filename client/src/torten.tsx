@@ -60,7 +60,7 @@ const MyPieChart = () => {
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Pie data={chartData} width={100} height={100} />
+                <Pie data={chartData} width={80} height={80} />
             </Grid>
         </Grid>
     );

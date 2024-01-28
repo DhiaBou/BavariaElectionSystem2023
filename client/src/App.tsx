@@ -53,11 +53,26 @@ function App() {
         <>
           <button onClick={() => setView('home')}>Home</button> {/* Home Button */}
           <MyComponent />
+                     <div style={{ height: '20px' }} />
+<h5>Pie Chart</h5>
           <MyPieChart />
+                     <div style={{ height: '20px' }} />
+<h5>Q2</h5>
+
           <ProductList />
+                     <div style={{ height: '20px' }} />
+<h5>Q3</h5>
+
           <ProductListt />
+                     <div style={{ height: '20px' }} />
+<h5>Q4</h5>
+
           <Listq4 />
-          <Listq5 />
+                     <div style={{ height: '20px' }} />
+<h5>Q5</h5>
+
+          <Listq5 />         <div style={{ height: '20px' }} />
+
         </>
       )}
 
