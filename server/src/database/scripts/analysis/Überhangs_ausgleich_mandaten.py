@@ -17,13 +17,13 @@ def sainte_lague_iterative_dict(votes, total_seats):
         elif allocated_seats > total_seats:
             for parteiID in votes.keys():
                 divisors_[parteiID] = votes[parteiID] / (
-                    round(allocation[parteiID]) - 0.5
+                        round(allocation[parteiID]) - 0.5
                 )
             divisor = sum(sorted(divisors_.values())[:2]) / 2
         else:
             for parteiID in votes.keys():
                 divisors_[parteiID] = votes[parteiID] / (
-                    round(allocation[parteiID]) + 0.5
+                        round(allocation[parteiID]) + 0.5
                 )
             divisor = sum(sorted(divisors_.values(), reverse=True)[:2]) / 2
 

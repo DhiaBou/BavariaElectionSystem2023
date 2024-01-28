@@ -1,7 +1,7 @@
 # Python script for generating tokens based on user input and storing them in a CSV file
 
-import hashlib
 import csv
+import hashlib
 import os
 
 from stimmabgabe.stimmkreise import stimmkreise

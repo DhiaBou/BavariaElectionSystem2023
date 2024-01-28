@@ -2,7 +2,6 @@ import pandas as pd
 
 from src.database.database import get_db
 from src.database.models.models import (
-    Parteien,
     Kandidaten,
     Erste_Stimmen,
     Zweite_Stimmzettel,

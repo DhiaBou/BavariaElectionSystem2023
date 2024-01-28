@@ -1,4 +1,5 @@
 from sqlalchemy.sql import text
+
 from database.models.models import (
     Wahlkreis,
     Abgeordnete,
@@ -75,21 +76,21 @@ def allocate_seats(wahlkreise_dict):
         for party, allocated_seat_count in allocated_seats.items():
             if direct_candidates_count[party] > erste_verteilung[party]:
                 ueberhangs_mandate += [(wahlkreis, party)] * (
-                    direct_candidates_count[party] - erste_verteilung[party]
+                        direct_candidates_count[party] - erste_verteilung[party]
                 )
             elif allocated_seat_count > erste_verteilung[party]:
                 ausgleichmandate += [(wahlkreis, party)] * (
-                    allocated_seat_count - erste_verteilung[party]
+                        allocated_seat_count - erste_verteilung[party]
                 )
             remaining_seats = allocated_seat_count - direct_candidates_count[party]
             for kandidat in kandidaten_gesammt_stimmen:
                 if should_allocate_seat(
-                    wahlkreis,
-                    party,
-                    kandidat,
-                    kandidaten_erstestimme,
-                    kandidaten_zweitestimme,
-                    remaining_seats,
+                        wahlkreis,
+                        party,
+                        kandidat,
+                        kandidaten_erstestimme,
+                        kandidaten_zweitestimme,
+                        remaining_seats,
                 ):
                     kandidaten_zweitestimme.append(kandidat[0])
                     remaining_seats -= 1
@@ -105,18 +106,18 @@ def allocate_seats(wahlkreise_dict):
 
 
 def should_allocate_seat(
-    wahlkreis,
-    party,
-    kandidat,
-    kandidaten_erstestimme,
-    kandidaten_zweitestimme,
-    remaining_seats,
+        wahlkreis,
+        party,
+        kandidat,
+        kandidaten_erstestimme,
+        kandidaten_zweitestimme,
+        remaining_seats,
 ):
     return (
-        kandidat[0] // 10000 == wahlkreis
-        and kandidat[3] == party
-        and kandidat[0] not in kandidaten_erstestimme + kandidaten_zweitestimme
-        and remaining_seats >= 1
+            kandidat[0] // 10000 == wahlkreis
+            and kandidat[3] == party
+            and kandidat[0] not in kandidaten_erstestimme + kandidaten_zweitestimme
+            and remaining_seats >= 1
     )
 
 

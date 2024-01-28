@@ -1,5 +1,5 @@
+import logging
 from http.client import HTTPException
-from typing import List
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -7,19 +7,11 @@ from pydantic import BaseModel
 from database.database import get_db
 from database.models.models import Erste_Stimmen, Zweite_Stimmzettel
 from database.scripts.analysis.B6.queries import (
-    q1,
-    q2,
-    q3,
-    q4,
-    q5,
-    q6_winners,
-    q6_losers,
     get_stimmzettel,
     get_zweit_stimmzettel,
 )
-from stimmabgabe.vote import can_vote
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from routers.voting.utils import parse_id_first_vote, parse_id_second_vote
+from stimmabgabe.vote import can_vote, remove_token_from_csv
 
 
 class FirstVote(BaseModel):
@@ -74,13 +66,14 @@ async def submit_vote(vote: Vote):
             db.add(zweite_stimme)
 
             # Commit the changes
-            #            db.commit()
-
+            db.commit()
+            remove_token_from_csv(vote.token)
             return {"message": "Vote received"}
 
         except Exception as e:
             # In case of any exception
             db.rollback()
+            logging.info("Error")
             return {"message": f"An error occurred: {e}"}
 
 
@@ -91,7 +84,7 @@ async def handle_first_vote(vote: FirstVote):
         try:
             # Update Erste_Stimmen with the first vote
             erste_stimme = Erste_Stimmen(
-                KandidatID=vote.first_vote, StimmkreisId=vote.code
+                KandidatID=parse_id_first_vote(vote.first_vote), StimmkreisId=vote.code
             )
             db.add(erste_stimme)
 
@@ -116,7 +109,7 @@ async def handle_second_vote(vote: SecondVote):
         try:
             # Update Zweite_Stimmen with the second vote
             zweite_stimme = Zweite_Stimmzettel(
-                KandidatID=vote.second_vote, StimmkreisId=vote.code
+                KandidatID=parse_id_second_vote(vote.second_vote), StimmkreisId=vote.code
             )
             db.add(zweite_stimme)
 

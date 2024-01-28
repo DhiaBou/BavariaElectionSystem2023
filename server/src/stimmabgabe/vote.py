@@ -1,5 +1,5 @@
-import hashlib
 import csv
+import hashlib
 from pathlib import Path
 
 
@@ -55,7 +55,6 @@ def vote(token, stimmkreis_id, first_vote, second_vote):
         return True
     else:
         return False
-
 
 # if __name__ == "__main__":
 #     while True:

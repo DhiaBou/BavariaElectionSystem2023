@@ -1,7 +1,7 @@
-from sqlalchemy import text
-
 # Replace 'your_database_url' with the actual database connection URL
 from pathlib import Path
+
+from sqlalchemy import text
 
 from database.database import get_db
 
@@ -53,6 +53,16 @@ def diffference_2023_2018():
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
     return result_list
+
+
+def reload():
+    with open(Path(__file__).parent / "views_code.sql", "r") as file:
+        query = file.read()
+
+    with get_db() as db:
+        db.execute(text(query))
+        db.commit()
+    return 'ok'
 
 
 def q3():

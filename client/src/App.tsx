@@ -10,6 +10,7 @@ import VotingComponent from "./vote";
 import Q2 from "./Q2";
 import ParlementVerteilung from "./torten";
 import Vergleich from "./Vergleich";
+import ReloadButton from "./ReloadButton";
 
 const BackendHealthComponent = () => {
     const [items, setItems] = useState([]);
@@ -52,6 +53,7 @@ function App() {
             {view === 'analysis' && (
                 <>
                     <button onClick={() => setView('home')}>Home</button>
+                    <ReloadButton/>
                     {/* Home Button */}
                     <BackendHealthComponent/>
                     <div style={{height: '20px'}}/>

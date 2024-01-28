@@ -11,7 +11,6 @@ with get_db() as db:
     for l in llist:
         party_name_id[l.kurzbezeichnung] = l.ParteiID
 
-
 path = "/Users/omarbouattour/PycharmProjects/Bayern_Wahl_dbs/server/src/database/scripts/csv/kandidaten/LTW2023_GEWAEHLTE_BEWERBER_UND_LISTENNACHFOLGER_WkrNr_"
 for i in range(901, 908, 1):
     file_path = path + str(i) + ".xls"

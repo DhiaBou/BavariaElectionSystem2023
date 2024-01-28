@@ -7,7 +7,7 @@ from database.scripts.analysis.B6.queries import (
     q4,
     q5,
     q6_winners,
-    q6_losers,
+    q6_losers, reload,
 )
 
 wahlkreis_router = APIRouter(
@@ -23,6 +23,11 @@ async def get_wahlkreis():
 @wahlkreis_router.get("/q1")
 async def query1():
     return q1()
+
+
+@wahlkreis_router.get("/reload")
+async def query1():
+    return reload()
 
 
 @wahlkreis_router.get("/q2")

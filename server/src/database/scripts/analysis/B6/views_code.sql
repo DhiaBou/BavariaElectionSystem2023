@@ -1,3 +1,12 @@
+DROP MATERIALIZED VIEW IF EXISTS Wahlergebnisse_difference_2018_zu_2023;
+DROP MATERIALIZED VIEW IF EXISTS Wahlergebnisse2023;
+DROP MATERIALIZED VIEW IF EXISTS erst_stimmzettel;
+DROP MATERIALIZED VIEW IF EXISTS kandidat_gasammt_stimmen;
+DROP MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_stimmkreis_view;
+DROP MATERIALIZED VIEW IF EXISTS direct_candidates;
+DROP MATERIALIZED VIEW IF EXISTS anteil_over_five_percent;
+DROP MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_wahlkreis_view;
+
 create MATERIALIZED view gesamt_stimmen_pro_partei_pro_wahlkreis_view as
 (
 WITH gesamt_erststimmen_pro_partei_pro_wahlkreis AS (SELECT w."WahlkreisId"       AS wahlkreisid,
