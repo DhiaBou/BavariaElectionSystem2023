@@ -15,14 +15,17 @@ const ProductTable: React.FC<any> = ({filteredTimestamps}) => {
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>parteiname</TableCell>
-                        <TableCell>erststimmen</TableCell>
-                        <TableCell>zweitestimmen</TableCell>
-                        <TableCell>gesamt_stimmen</TableCell>
-                        <TableCell>vote_percentage</TableCell>
-                        <TableCell>difference_gesamt_stimmen</TableCell>
-                        <TableCell>anzahl_sitze</TableCell>
-                        <TableCell>difference_anzahl_sitze</TableCell>
+                        <TableCell>Partei</TableCell>
+                        <TableCell>Erststimmen 2018</TableCell>
+                        <TableCell>Zweitstimmen 2018</TableCell>
+                        <TableCell>Gesamtstimmen 2018</TableCell>
+                        <TableCell>Erststimmen 2023</TableCell>
+                        <TableCell>Zweitstimmen 2023</TableCell>
+                        <TableCell>Gesamtstimmen 2023</TableCell>
+                        <TableCell>2023 %</TableCell>
+                        <TableCell>Differenz Gesammtstimmen</TableCell>
+                        <TableCell>Anzahl Abgeordnete</TableCell>
+                        <TableCell>Differenz Anzahl Abgeordnete</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -34,6 +37,9 @@ const ProductTable: React.FC<any> = ({filteredTimestamps}) => {
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell>{product.parteiname}</TableCell>
+                                <TableCell>{product.erstimmen2018}</TableCell>
+                                <TableCell>{product.zweitstimmen2018}</TableCell>
+                                <TableCell>{product.gesammtstimmen2018}</TableCell>
                                 <TableCell>{product.erststimmen}</TableCell>
                                 <TableCell>{product.zweitestimmen}</TableCell>
                                 <TableCell>{product.gesamt_stimmen}</TableCell>

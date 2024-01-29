@@ -82,7 +82,7 @@ const Q4 = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
-                        Select a Product ID
+                        Stimmkreiswählen
                     </MenuItem>
                     {productIds.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>

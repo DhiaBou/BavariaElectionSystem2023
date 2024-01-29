@@ -15,6 +15,8 @@ interface Product {
     gesamt_stimmen: number;
     percentage: string;
     gewaehlte_kandidaten: string;
+    erststimmen: string;
+    zweite_stimme: string;
 }
 
 interface ProductTableProps {
@@ -27,30 +29,27 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Stimmkreis ID</TableCell>
                         <TableCell>Partei Name</TableCell>
-                        <TableCell>Wahlbeteiligung</TableCell>
+                        <TableCell>Erststimmen</TableCell>
+                        <TableCell>Zweitstimmen</TableCell>
                         <TableCell>Gesamt Stimmen</TableCell>
                         <TableCell>Percentage</TableCell>
-                        <TableCell>Gewählte Kandidaten</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredTimestamps.map((product) => (
-                        <TableRow
-                            key={product.stimmkreisid}
-                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell component="th" scope="row">
-                                {product.stimmkreisid}
-                            </TableCell>
-                            <TableCell>{product.parteiname}</TableCell>
-                            <TableCell>{product.wahlbeteiligung}</TableCell>
-                            <TableCell>{product.gesamt_stimmen}</TableCell>
-                            <TableCell>{product.percentage}</TableCell>
-                            <TableCell>{product.gewaehlte_kandidaten}</TableCell>
-                        </TableRow>
-                    ))}
+                    {    // @ts-ignore
+                        filteredTimestamps.map((product) => (
+                            <TableRow
+                                key={product.stimmkreisid + product.parteiname}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                            >
+                                <TableCell>{product.parteiname}</TableCell>
+                                <TableCell>{product.erststimmen}</TableCell>
+                                <TableCell>{product.zweite_stimme}</TableCell>
+                                <TableCell>{product.gesamt_stimmen}</TableCell>
+                                <TableCell>{product.percentage}</TableCell>
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
         </TableContainer>
@@ -75,15 +74,11 @@ const Q3 = () => {
 
     // Handle selection change
     const handleSelectionChange = (event: SelectChangeEvent<string>) => {
-
-        setSelectedProductId(event.target.value as string);
+        const newSelectedProductId = event.target.value as string;
+        setSelectedProductId(newSelectedProductId);
     };
 
-    // Filter timestamps for selected product ID
-    const filteredTimestamps = products
-        .filter(product => product.stimmkreisid === selectedProductId)
-        .sort((a, b) => b.gesamt_stimmen - a.gesamt_stimmen);
-
+    const filteredTimestamps = products.filter(product => product.stimmkreisid === selectedProductId)
     return (
         <div>
             <FormControl fullWidth>
@@ -94,16 +89,21 @@ const Q3 = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
-                        Select a Stimmkreis
+                        Stimmkreiswählen
                     </MenuItem>
                     {productIds.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
+            {filteredTimestamps && filteredTimestamps[0] && filteredTimestamps[0].wahlbeteiligung !== undefined &&
+                <>
+                    <a style={{fontSize: 'smaller'}}>Wahlbeteiligung: {filteredTimestamps[0].wahlbeteiligung}%</a> <br/>
+                    <a style={{fontSize: 'smaller'}}>Gewählte
+                        Kandidaten: {filteredTimestamps[0].gewaehlte_kandidaten} - {filteredTimestamps[0].parteiname}</a>                </>
+            }
             <ProductTable filteredTimestamps={filteredTimestamps}/>
         </div>
     );
-};
-
+}
 export default Q3;

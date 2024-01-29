@@ -39,7 +39,7 @@ const Q2 = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
-                        Select a Product ID
+                        Partei Wählen
                     </MenuItem>
                     {productIds.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>

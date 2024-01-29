@@ -31,11 +31,10 @@ def remove_token_from_csv(token):
             if row[0] != token:
                 rows.append(row)
 
-    with open(Path(__file__).parent / "token.csv", "r") as file:
+    with open(Path(__file__).parent / "token.csv", "w", newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Token"])  # Write the header back
         for row in rows:
-            writer.writerow([row[0]])
+            writer.writerow(row)
 
 
 def can_vote(id, favorite_number):

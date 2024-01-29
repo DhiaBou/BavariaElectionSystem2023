@@ -78,7 +78,7 @@ function App() {
                     <Q5/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Vergleich</h5>
+                    <h5>Vergleich mit Wahlergebnissen 2018</h5>
                     <Vergleich/>
                     <div style={{height: '20px'}}/>
 

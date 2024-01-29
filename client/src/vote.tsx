@@ -44,7 +44,7 @@ const VotingComponent = () => {
     };
 
     // @ts-ignore
-    const handleSubmit = async (event) => {
+    const handleCheck = async (event) => {
         event.preventDefault();
         try {
             const response = await axios.get('http://localhost:8000/vote', {
@@ -56,7 +56,7 @@ const VotingComponent = () => {
             setFirstVoteCandidates(response.data[1]);
             setSecondVoteCandidates(response.data[2]);
             setError('');
-            setCurrentStep(2); // Move to second vote
+            setCurrentStep(3); // Move to second vote
 
 
         } catch (err) {
@@ -67,41 +67,13 @@ const VotingComponent = () => {
         }
     };
 
-    const handleVoteSubmit = async () => {
+    const handleSubmitVote = async () => {
         try {
+            // Submit the second vote
             await axios.post('http://localhost:8000/vote/submit_vote', {
                 token,
                 code: stimmkreis,
                 first_vote: selectedFirstVote,
-                second_vote: selectedSecondVote,
-            });
-            console.log("Vote submitted successfully");
-        } catch (err) {
-            console.error("Error submitting vote", err);
-        }
-    };
-    const handleFirstVoteSubmit = async () => {
-        try {
-            // Submit the first vote
-            // Assuming the API endpoint and request body for first vote submission
-            await axios.post('http://localhost:8000/vote/first_vote', {
-                token,
-                code: stimmkreis,
-                first_vote: selectedFirstVote,
-            });
-
-            console.log("First vote submitted successfully");
-            setCurrentStep(3); // Move to second vote
-        } catch (err) {
-            console.error("Error submitting first vote", err);
-        }
-    };
-    const handleSecondVoteSubmit = async () => {
-        try {
-            // Submit the second vote
-            await axios.post('http://localhost:8000/vote/second_vote', {
-                token,
-                code: stimmkreis,
                 second_vote: selectedSecondVote,
             });
             console.log("Second vote submitted successfully");
@@ -113,7 +85,7 @@ const VotingComponent = () => {
     if (currentStep === 1) {
         return (
             <div style={{padding: '20px', maxWidth: '500px', margin: 'auto'}}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleCheck}>
                     <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -152,76 +124,62 @@ const VotingComponent = () => {
                 {error && <p>{error}</p>}
             </div>
         );
-    }
-    if (currentStep === 2) {
-        return (
-            <div style={{padding: '20px', maxWidth: '500px', margin: 'auto'}}>
-                {/* First Vote Section */}
-                {firstVoteCandidates.length > 0 && (
-                    <Card className="vote-section">
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                First Vote
-                            </Typography>
-                            <RadioGroup name="firstVoteCandidates" value={selectedFirstVote}
-                                        onChange={handleFirstVoteChange}>
-                                {firstVoteCandidates.map(candidate => (
-                                    <FormControlLabel
-                                        key={candidate}
-                                        value={String(candidate)}
-                                        control={<Radio/>}
-                                        label={candidate}
-                                    />
-                                ))}
-                            </RadioGroup>
-                        </CardContent>
-                    </Card>
-                )}
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleFirstVoteSubmit}
-                    disabled={!selectedFirstVote}
-                    fullWidth
-                >
-                    Submit First Vote
-                </Button>
-
-                {error && <p>{error}</p>}
-            </div>
-        );
     } else if (currentStep === 3) {
         return (
-            <div style={{padding: '20px', maxWidth: '500px', margin: 'auto'}}>
+            <div style={{padding: '20px', maxWidth: '1000px', margin: 'auto'}}>
                 {/* Second Vote Section */}
-                {secondVoteCandidates.length > 0 && (
-                    <Card className="vote-section">
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                Second Vote
-                            </Typography>
-                            <RadioGroup name="secondVoteCandidates" value={selectedSecondVote}
-                                        onChange={handleSecondVoteChange}>
-                                {secondVoteCandidates.map(candidate => (
-                                    <FormControlLabel
-                                        key={candidate}
-                                        value={String(candidate)}
-                                        control={<Radio/>}
-                                        label={candidate}
-                                    />
-                                ))}
-                            </RadioGroup>
-                        </CardContent>
-                    </Card>
-                )}
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                    {firstVoteCandidates.length > 0 && (
+                        <Card className="vote-section" style={{overflow: 'auto', height: '600px'}}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    First Vote
+                                </Typography>
+                                <RadioGroup name="firstVoteCandidates" value={selectedFirstVote}
+                                            onChange={handleFirstVoteChange}>
+                                    {firstVoteCandidates.map(candidate => (
+                                        <FormControlLabel
+                                            key={candidate}
+                                            value={String(candidate).split('__')[1]}
+                                            control={<Radio/>}
+                                            label={String(candidate).split('__')[0]}
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </CardContent>
+                        </Card>
+                    )}
+                    {secondVoteCandidates.length > 0 && (
+                        <div style={{marginLeft: '50px', flex: '1'}}>
+                            <Card className="vote-section" style={{overflow: 'auto', height: '600px'}}>
+                                <CardContent>
+                                    <Typography variant="h5" component="h2">
+                                        Second Vote
+                                    </Typography>
+                                    <RadioGroup name="secondVoteCandidates" value={selectedSecondVote}
+                                                onChange={handleSecondVoteChange}>
+                                        {secondVoteCandidates.map(candidate => (
+                                            <FormControlLabel
+                                                key={candidate}
+                                                value={String(candidate).split('__')[1]}
+                                                control={<Radio/>}
+                                                label={String(candidate).split('__')[0]}
+                                            />
+                                        ))}
+                                    </RadioGroup>
+                                </CardContent>
+                            </Card></div>
+                    )}
+
+                </div>
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleSecondVoteSubmit}
-                    disabled={!selectedSecondVote}
+                    onClick={handleSubmitVote}
+                    disabled={!selectedSecondVote && !selectedFirstVote}
                     fullWidth
                 >
-                    Submit Second Vote
+                    Submit Vote
                 </Button>
 
                 {error && <p>{error}</p>}
@@ -230,7 +188,7 @@ const VotingComponent = () => {
     } else {
         return (
             <div style={{padding: '20px', maxWidth: '500px', margin: 'auto'}}>
-                <Typography variant="h5">Thank you for voting!</Typography>
+                <Typography variant="h5">Danke!</Typography>
             </div>
         );
     }

@@ -153,11 +153,11 @@ def get_stimmzettel(stimmkreis):
         result = db.execute(text(query)).all()
 
         result_list = [
-            row[1] + " / " + str(row[2]) + " / " + row[0]
+            row[1] + " - " + str(row[2]) + " - " + row[0] + "__" + str(row[3])
             for row in result
             if int(row[2]) == int(stimmkreis)
         ]
-    return result_list
+    return ["-- keine Wahl -- __0"] + result_list
 
 
 def get_zweit_stimmzettel(stimmkreis):
@@ -168,12 +168,12 @@ def get_zweit_stimmzettel(stimmkreis):
         result = db.execute(text(query)).all()
 
         result_list = [
-            row[1] + " / " + row[0]
+            row[1] + " / " + row[0] + "__" + str(row[2])
             for row in result
             if (row[2] - 9000000) // 10000 == int(stimmkreis) // 100
         ]
-        result_list += list(set(row[1] for row in result))
-    return sorted(result_list)
+        result_list += list(set(row[1] + " __" + str(row[3]) for row in result))
+    return ["-- keine Wahl -- __0"] + sorted(result_list)
 
 
 if __name__ == "__main__":

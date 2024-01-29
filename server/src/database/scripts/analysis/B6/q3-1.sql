@@ -80,7 +80,8 @@ with ranking as (select g.*, rank() over ( partition by g.stimmkreisid order by 
    , ranking_sorted as (select r.*,
                                r.erststimmen - (select r2.erststimmen
                                                 from ranking r2
-                                                where r2.rank = 2 and r2.stimmkreisid = r.stimmkreisid) as difference
+                                                where r2.rank = 2
+                                                  and r2.stimmkreisid = r.stimmkreisid) as difference
                         from ranking r
                         where r.rank = 1
                         order by difference)
