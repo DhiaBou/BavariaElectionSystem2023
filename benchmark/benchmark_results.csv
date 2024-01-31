@@ -1,0 +1,8 @@
+Endpoint,Mean Duration (seconds),Hits
+q1,0.01,343
+q2,0.01,132
+q3,0.01,133
+q4,0.01,127
+q5,0.01,148
+q6-winners,0.01,58
+q6-losers,0.00,59
