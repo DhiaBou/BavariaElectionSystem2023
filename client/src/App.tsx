@@ -11,6 +11,7 @@ import Q2 from "./Q2";
 import ParlementVerteilung from "./torten";
 import Vergleich from "./Vergleich";
 import ReloadButton from "./ReloadButton";
+import Q6 from "./Q6";
 
 const BackendHealthComponent = () => {
     const [items, setItems] = useState([]);
@@ -76,6 +77,10 @@ function App() {
 
                     <h5>Q5</h5>
                     <Q5/>
+                    <div style={{height: '20px'}}/>
+
+                    <h5>Q6</h5>
+                    <Q6/>
                     <div style={{height: '20px'}}/>
 
                     <h5>Vergleich mit Wahlergebnissen 2018</h5>

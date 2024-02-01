@@ -6,8 +6,8 @@ from database.scripts.analysis.B6.queries import (
     q3,
     q4,
     q5,
-    q6_winners,
-    q6_losers, reload,
+    q6,
+    reload,
 )
 
 wahlkreis_router = APIRouter(
@@ -55,14 +55,9 @@ async def query5():
     return q5()
 
 
-@wahlkreis_router.get("/q6-winners")
-async def query6_winners():
-    return q6_winners()
-
-
-@wahlkreis_router.get("/q6-losers")
-async def query6_losers():
-    return q6_losers()
+@wahlkreis_router.get("/q6")
+async def query6():
+    return q6()
 
 
 @wahlkreis_router.get("/1")

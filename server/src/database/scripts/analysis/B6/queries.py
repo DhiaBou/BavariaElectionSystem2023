@@ -113,24 +113,9 @@ def q5():
     return result_list
 
 
-def q6_losers():
-    with open(Path(__file__).parent / "q6-losers.sql", "r") as file:
-        query = file.read()
 
-    with get_db() as db:
-        result = db.execute(text(query))
-
-        # Fetch column names
-        column_names = result.keys()
-
-        # Fetch all rows and convert them to dictionaries
-        rows = result.fetchall()
-        result_list = [dict(zip(column_names, row)) for row in rows]
-    return result_list
-
-
-def q6_winners():
-    with open(Path(__file__).parent / "q6-winners.sql", "r") as file:
+def q6():
+    with open(Path(__file__).parent / "q6.sql", "r") as file:
         query = file.read()
 
     with get_db() as db:
