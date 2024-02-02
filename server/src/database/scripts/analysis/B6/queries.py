@@ -1,10 +1,44 @@
 # Replace 'your_database_url' with the actual database connection URL
 from pathlib import Path
 
-from sqlalchemy import text
 
-from database.database import get_db
 
+def get_auslaender_quote():
+    query = """
+        select * from auslaender_quote      
+         """
+    with get_db() as db:
+        result = db.execute(text(query))
+
+        # Fetch column names
+        column_names = result.keys()
+
+        # Fetch all rows and convert them to dictionaries
+        rows = result.fetchall()
+        result_list = [dict(zip(column_names, row)) for row in rows]
+    return result_list
+
+
+
+def get_income_pro_stimmkreis():
+    query = """
+          
+            select g."Gemeineschluessel", s."StimmkreisId", s."Name", e."Kreis",g."Name", e."Einkommen"
+            from stimmkreis s, "Einkommen_pro_stimmkreis"  e, gemeinde g
+            where g."Kreisschluessel" = e."Kreis" and g."StimmkreisID" = s."StimmkreisId"
+
+
+         """
+    with get_db() as db:
+        result = db.execute(text(query))
+
+        # Fetch column names
+        column_names = result.keys()
+
+        # Fetch all rows and convert them to dictionaries
+        rows = result.fetchall()
+        result_list = [dict(zip(column_names, row)) for row in rows]
+    return result_list
 
 def q1():
     with open(Path(__file__).parent / "q1.sql", "r") as file:
@@ -21,6 +55,29 @@ def q1():
         result_list = [dict(zip(column_names, row)) for row in rows]
 
     return result_list
+from database.database import get_db
+from sqlalchemy.sql import text
+
+
+def get_income_pro_wahlkreis():
+    query = """
+        select w."WahlkreisId", w."Name", e."Einkommen"
+        from  wahlkreis w
+        join "Einkommen_pro_wahlkreis" e
+         on w."WahlkreisId" = e."WahlkreisID"        
+         """
+    with get_db() as db:
+        result = db.execute(text(query))
+
+        # Fetch column names
+        column_names = result.keys()
+
+        # Fetch all rows and convert them to dictionaries
+        rows = result.fetchall()
+        result_list = [dict(zip(column_names, row)) for row in rows]
+    return result_list
+
+
 
 
 def q2():
