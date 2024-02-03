@@ -1,4 +1,4 @@
-SELECT w."Name", p.kurzbezeichnung, CAST(an.anteil AS DECIMAL(10,2)), ein.einkommen
+SELECT w."Name", p.kurzbezeichnung, CAST(an.anteil AS DECIMAL(10, 2)), ein.einkommen
 from anteil_over_five_percent an,
      wahlkreis w,
      einkommen_pro_wahlkreis ein,

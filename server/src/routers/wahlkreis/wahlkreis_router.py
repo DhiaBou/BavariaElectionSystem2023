@@ -65,6 +65,7 @@ async def query6():
 async def get_q1():
     return ["3asbbbba"]
 
+
 @wahlkreis_router.get("/einkommen")
 async def get_income():
     return get_income_pro_wahlkreis()

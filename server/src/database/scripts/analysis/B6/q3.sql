@@ -4,18 +4,16 @@ from direct_candidates d;
 -- q3.2
 with anzahl_stimmen_pro_stimmkreis as (select g.stimmkreisid,
                                               sum(g.gesamt_stimmen) as sum
-                                       from gesamt_stimmen_pro_partei_pro_stimmkreis_view g
-                                       group by g.stimmkreisid),
-     voters_pro_stimmkreis as (select "StimmkreisId", count(*) as Count_Voters
-                               from erste_stimmzettel
-                               group by "StimmkreisId"),
-     wahlbeteiligung as (select s."StimmkreisId",
-                                v.count_voters,
-                                s."Stimmberechtigte",
-                                ROUND(v.Count_Voters * 100.0 / s."Stimmberechtigte", 2) as Wahlbeteiligung
-                         from voters_pro_stimmkreis v,
-                              stimmkreis s
-                         where s."StimmkreisId" = v."StimmkreisId")
+from gesamt_stimmen_pro_partei_pro_stimmkreis_view g
+group by g.stimmkreisid),
+    voters_pro_stimmkreis as (
+select "StimmkreisId", count (*) as Count_Voters
+from erste_stimmzettel
+group by "StimmkreisId"),
+    wahlbeteiligung as (
+select s."StimmkreisId", v.count_voters, s."Stimmberechtigte", ROUND(v.Count_Voters * 100.0 / s."Stimmberechtigte", 2) as Wahlbeteiligung
+from voters_pro_stimmkreis v, stimmkreis s
+where s."StimmkreisId" = v."StimmkreisId")
 
 
 --q3

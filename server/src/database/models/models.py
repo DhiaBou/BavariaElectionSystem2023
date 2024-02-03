@@ -87,26 +87,28 @@ class Zweite_Stimme_Ohne_Kandidaten(Base):
     StimmkreisId = Column(Integer, ForeignKey("stimmkreis.StimmkreisId"))
     ParteiID = Column(Integer, ForeignKey("parteien.ParteiID"))
 
+
 class Auslaender_Quote(Base):
     __tablename__ = "auslaender_quote"
-    kreis = Column(Integer, primary_key = True)
+    kreis = Column(Integer, primary_key=True)
     Quote = Column(Double)
+
 
 class Einkommen_pro_wahlkreis(Base):
     __tablename__ = "Einkommen_pro_wahlkreis"
-    WahlkreisID = Column(Integer,  ForeignKey("wahlkreis.WahlkreisId") ,primary_key = True)
+    WahlkreisID = Column(Integer, ForeignKey("wahlkreis.WahlkreisId"), primary_key=True)
     Einkommen = Column(Integer)
 
 
 class Einkommen_pro_stimmkreis(Base):
     __tablename__ = "Einkommen_pro_stimmkreis"
-    Kreis = Column(Integer ,primary_key = True)
+    Kreis = Column(Integer, primary_key=True)
     Einkommen = Column(Integer)
 
 
 class gemeinde(Base):
     __tablename__ = "gemeinde"
-    Gemeineschluessel = Column(Integer, primary_key = True)
+    Gemeineschluessel = Column(Integer, primary_key=True)
     Kreisschluessel = Column(Integer)
-    StimmkreisID = Column(Integer , ForeignKey("stimmkreis.StimmkreisId"))
+    StimmkreisID = Column(Integer, ForeignKey("stimmkreis.StimmkreisId"))
     Name = Column(String)

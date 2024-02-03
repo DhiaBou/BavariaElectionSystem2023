@@ -41,9 +41,13 @@ with candidatevotes_ AS (SELECT erste_stimmzettel."StimmkreisId",
              UNION
              (SELECT *, 'loser'
               FROM knappester_loser kl
-              WHERE rn <= 10 and not exists(
-                  select * from vote_rank_distance vrd, parteien p where p."ParteiID"=vrd."ParteiID" and vrd.rank_in_stimmkreis = 1 and p.kurzbezeichnung=kl.kurzbezeichnung
-              )))
+              WHERE rn <= 10
+                and not exists(select *
+                               from vote_rank_distance vrd,
+                                    parteien p
+                               where p."ParteiID" = vrd."ParteiID"
+                                 and vrd.rank_in_stimmkreis = 1
+                                 and p.kurzbezeichnung = kl.kurzbezeichnung)))
 select *
 from tmp
 order by kurzbezeichnung, distance

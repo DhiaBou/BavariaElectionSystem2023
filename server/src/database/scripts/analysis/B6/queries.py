@@ -72,7 +72,18 @@ def get_income_pro_wahlkreis():
         # Fetch all rows and convert them to dictionaries
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
-    return result_list
+        transformed_data = {}
+        for item in result_list:
+            region = item["Name"]
+            partei = item["kurzbezeichnung"]
+            anteil = item["anteil"]
+            einkommen = item["einkommen"]
+
+            if region not in transformed_data:
+                transformed_data[region] = {"einkommen": einkommen}
+            transformed_data[region][partei] = anteil
+
+    return transformed_data
 
 
 def q2():
