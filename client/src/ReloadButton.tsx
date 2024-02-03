@@ -30,7 +30,7 @@ const ReloadButton: React.FC = () => {
                 onClick={handleReload}
                 disabled={isLoading}
             >
-                {isSuccess ? 'Reloading successful' : 'Reload'}
+                {'Reload'}
             </LoadingButton>
         </div>
     );
