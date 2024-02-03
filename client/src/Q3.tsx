@@ -100,7 +100,8 @@ const Q3 = () => {
                 <>
                     <a style={{fontSize: 'smaller'}}>Wahlbeteiligung: {filteredTimestamps[0].wahlbeteiligung}%</a> <br/>
                     <a style={{fontSize: 'smaller'}}>Gewählte
-                        Kandidaten: {filteredTimestamps[0].gewaehlte_kandidaten} - {filteredTimestamps[0].parteiname}</a>                </>
+                        Kandidaten: {filteredTimestamps[0].gewaehlte_kandidaten} - {filteredTimestamps[0].parteiname}</a>
+                </>
             }
             <ProductTable filteredTimestamps={filteredTimestamps}/>
         </div>

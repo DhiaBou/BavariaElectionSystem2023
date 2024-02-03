@@ -6,12 +6,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 
 interface Product {
     kurzbezeichnung: string;
-    kandidate_name: string;
-    stimmkreis_name: string;
+    name: string;
+    stimmkreisid: string;
     distance: number;
+    rn: number;
+    winner_or_loser: string;
 }
 
 interface ProductTableProps {
@@ -27,7 +30,7 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
                         <TableCell>Partei</TableCell>
                         <TableCell>Kandidatenname</TableCell>
                         <TableCell>Stimmkreis</TableCell>
-                        <TableCell>Distanz zum nächsten</TableCell>
+                        <TableCell>Distanz zum nächsten oder zum ersten</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -39,9 +42,9 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
                                 {product.kurzbezeichnung}
                             </TableCell>
                             <TableCell component="th" scope="row">
-                                {product.kandidate_name}
+                                {product.name}
                             </TableCell>
-                            <TableCell>{product.stimmkreis_name}</TableCell>
+                            <TableCell>{product.stimmkreisid}</TableCell>
                             <TableCell>{product.distance}</TableCell>
                         </TableRow>
                     ))}
@@ -54,6 +57,7 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
 
 const Q6 = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const [selectedProductId, setSelectedProductId] = useState('');
 
     // Fetch data from the server
     useEffect(() => {
@@ -62,10 +66,37 @@ const Q6 = () => {
             .then(data => setProducts(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
+    const productIds = Array.from(new Set(products.map(product => product.kurzbezeichnung)));
+    const handleSelectionChange = (event: SelectChangeEvent<string>) => {
+        const newSelectedProductId = event.target.value as string;
+        setSelectedProductId(newSelectedProductId);
+    };
+    const filteredTimestamps = products.filter(product => product.kurzbezeichnung === selectedProductId)
 
     return (
         <div>
-            <ProductTable filteredTimestamps={products}/>
+            <FormControl fullWidth>
+                <Select
+                    value={selectedProductId}
+                    onChange={handleSelectionChange}
+                    displayEmpty
+                    inputProps={{'aria-label': 'Without label'}}
+                >
+                    <MenuItem value="" disabled>
+                        Partei wählen
+                    </MenuItem>
+                    {productIds.map(id => (
+                        <MenuItem key={id} value={id}>{id}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            {filteredTimestamps && filteredTimestamps[0] && filteredTimestamps[0].winner_or_loser !== undefined &&
+                <> <a
+                    style={{fontSize: 'smaller'}}>{filteredTimestamps[0].kurzbezeichnung}: {filteredTimestamps[0].winner_or_loser}</a>
+                    <br/></>
+            }
+
+            <ProductTable filteredTimestamps={filteredTimestamps}/>
         </div>
     );
 };
