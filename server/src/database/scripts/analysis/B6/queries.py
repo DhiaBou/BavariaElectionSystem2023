@@ -61,7 +61,7 @@ from sqlalchemy.sql import text
 
 def get_income_pro_wahlkreis():
     query = """
-        SELECT
+  SELECT
     w."WahlkreisId",
     w."Name",
     e."Einkommen",
@@ -76,8 +76,8 @@ JOIN "Einkommen_pro_wahlkreis" e ON w."WahlkreisId" = e."WahlkreisID"
 JOIN anteil_over_five_percent a ON a.wahlkreisid = w."WahlkreisId"
 JOIN parteien p ON p."ParteiID" = a.parteiid
 GROUP BY w."WahlkreisId", w."Name", e."Einkommen"
-ORDER BY w."WahlkreisId"
-      
+order by w."WahlkreisId"
+ 
          """
     with get_db() as db:
         result = db.execute(text(query))
@@ -232,6 +232,6 @@ def get_zweit_stimmzettel(stimmkreis):
 
 
 if __name__ == "__main__":
-    result_query = get_stimmzettel(101)
+    result_query = get_income_pro_wahlkreis()
     for row in result_query:
         print(row)
