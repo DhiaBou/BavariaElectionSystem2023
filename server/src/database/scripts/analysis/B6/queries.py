@@ -2,7 +2,6 @@
 from pathlib import Path
 
 
-
 def get_auslaender_quote():
     query = """
         select * from auslaender_quote      
@@ -17,7 +16,6 @@ def get_auslaender_quote():
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
     return result_list
-
 
 
 def get_income_pro_stimmkreis():
@@ -40,6 +38,7 @@ def get_income_pro_stimmkreis():
         result_list = [dict(zip(column_names, row)) for row in rows]
     return result_list
 
+
 def q1():
     with open(Path(__file__).parent / "q1.sql", "r") as file:
         query = file.read()
@@ -55,30 +54,15 @@ def q1():
         result_list = [dict(zip(column_names, row)) for row in rows]
 
     return result_list
+
+
 from database.database import get_db
 from sqlalchemy.sql import text
 
 
 def get_income_pro_wahlkreis():
-    query = """
-  SELECT
-    w."WahlkreisId",
-    w."Name",
-    e."Einkommen",
-    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '1') AS "CSU",
-    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '2') AS "GRÜNE",
-    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '3') AS "FREIE WÄHLER",
-    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '4') AS "AfD",
-    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '5') AS "SPD"
-
-FROM wahlkreis w
-JOIN "Einkommen_pro_wahlkreis" e ON w."WahlkreisId" = e."WahlkreisID"
-JOIN anteil_over_five_percent a ON a.wahlkreisid = w."WahlkreisId"
-JOIN parteien p ON p."ParteiID" = a.parteiid
-GROUP BY w."WahlkreisId", w."Name", e."Einkommen"
-order by w."WahlkreisId"
- 
-         """
+    with open(Path(__file__).parent / "income_to_votes.sql", "r") as file:
+        query = file.read()
     with get_db() as db:
         result = db.execute(text(query))
 
@@ -89,8 +73,6 @@ order by w."WahlkreisId"
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
     return result_list
-
-
 
 
 def q2():
@@ -181,7 +163,6 @@ def q5():
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
     return result_list
-
 
 
 def q6():
