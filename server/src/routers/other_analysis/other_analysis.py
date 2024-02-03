@@ -6,17 +6,19 @@ other = APIRouter(
     prefix="/other",
 )
 
-
+@other.get("/")
+async def get_():
+    return ["3asba"]
 @other.get("/wahlkreis")
-async def get_income_pro_wahlkreis():
+async def wahlkreis():
     return get_income_pro_wahlkreis()
 
 @other.get("/stimmkreis")
-async def get_income_pro_stimmkreis():
-    return (get_income_pro_stimmkreis())
+async def stimmkreis():
+    return get_income_pro_stimmkreis()
 
 @other.get("/auslaender")
-async def get_auslaender_quote():
+async def auslaender_quote():
     return get_auslaender_quote()
 
 

@@ -61,10 +61,23 @@ from sqlalchemy.sql import text
 
 def get_income_pro_wahlkreis():
     query = """
-        select w."WahlkreisId", w."Name", e."Einkommen"
-        from  wahlkreis w
-        join "Einkommen_pro_wahlkreis" e
-         on w."WahlkreisId" = e."WahlkreisID"        
+        SELECT
+    w."WahlkreisId",
+    w."Name",
+    e."Einkommen",
+    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '1') AS "CSU",
+    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '2') AS "GRÜNE",
+    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '3') AS "FREIE WÄHLER",
+    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '4') AS "AfD",
+    SUM(a.anteil) FILTER (WHERE p."ParteiID" = '5') AS "SPD"
+
+FROM wahlkreis w
+JOIN "Einkommen_pro_wahlkreis" e ON w."WahlkreisId" = e."WahlkreisID"
+JOIN anteil_over_five_percent a ON a.wahlkreisid = w."WahlkreisId"
+JOIN parteien p ON p."ParteiID" = a.parteiid
+GROUP BY w."WahlkreisId", w."Name", e."Einkommen"
+ORDER BY w."WahlkreisId"
+      
          """
     with get_db() as db:
         result = db.execute(text(query))
