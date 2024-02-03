@@ -63,11 +63,3 @@ async def query6():
 @wahlkreis_router.get("/1")
 async def get_q1():
     return ["3asbbbba"]
-import requests
-
-# Assuming the FastAPI server is running on localhost and port 8000
-base_url = "http://localhost:3000/wahlkreis"
-
-# Call the /wahlkreis endpoint
-response_wahlkreis = requests.get(f"{base_url}/1")
-print("Status Code for Wahlkreis:", response_wahlkreis)
