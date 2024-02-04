@@ -23,7 +23,7 @@ interface ProductTableProps {
     filteredData: BackendResponse[]; // Assuming 'BackendResponse' is your data type
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
+const TableComponent: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -101,7 +101,7 @@ const Q3 = () => {
                         Kandidaten: {filteredData[0].gewaehlte_kandidaten} - {filteredData[0].parteiname}</a>
                 </>
             }
-            <ProductTable filteredData={filteredData}/>
+            <TableComponent filteredData={filteredData}/>
         </div>
     );
 }

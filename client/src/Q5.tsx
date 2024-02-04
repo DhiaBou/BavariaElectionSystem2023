@@ -17,7 +17,7 @@ interface ProductTableProps {
     filteredData: BackendResponse[];
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
+const TableComponent: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -62,7 +62,7 @@ const Q5 = () => {
 
     return (
         <div>
-            <ProductTable filteredData={backendData}/>
+            <TableComponent filteredData={backendData}/>
         </div>
     );
 };

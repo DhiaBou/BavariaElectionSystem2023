@@ -2,11 +2,52 @@ import {Grid} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import {Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
 
 interface DataItem {
     kurzbezeichnung: number;
     count: number;
 }
+
+interface ProductTableProps {
+    filteredData: DataItem[];
+}
+
+const TableComponent: React.FC<ProductTableProps> = ({filteredData}) => {
+    return (
+        <TableContainer component={Paper}>
+            <Table sx={{minWidth: 650}} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Parteinamen</TableCell>
+                        <TableCell>Anzahl Abgeordnete</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {filteredData.map((row) => (
+                        <TableRow
+                            key={row.kurzbezeichnung}
+                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.kurzbezeichnung}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.count}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+};
 
 interface ChartData {
     labels: string[];
@@ -17,6 +58,8 @@ interface ChartData {
 }
 
 const ParlementVerteilung = () => {
+    const [backendData, setBackendData] = useState<DataItem[]>([]);
+
     const [chartData, setChartData] = useState<ChartData>({
         labels: [],
         datasets: [{
@@ -38,6 +81,7 @@ const ParlementVerteilung = () => {
         fetch('http://localhost:8000/wahlkreis/q1')
             .then(response => response.json())
             .then((data: DataItem[]) => {
+                setBackendData(data)
                 const labels = data.map(item => `${item.kurzbezeichnung}: ${item.count}`);
                 const counts = data.map(item => item.count);
 
@@ -57,12 +101,16 @@ const ParlementVerteilung = () => {
     }, []);
 
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid container spacing={2} justifyContent="center" alignItems="center" direction="row">
             <Grid item xs={4} style={{display: 'flex', justifyContent: 'center'}}>
-                <Pie data={chartData} width={80} height={80}/>
+                <Pie data={chartData} width={60} height={60}/>
+            </Grid>
+            <Grid item xs={6} style={{display: 'flex', justifyContent: 'center'}}>
+                <TableComponent filteredData={backendData}/>
             </Grid>
         </Grid>
     );
-}
+};
+
 
 export default ParlementVerteilung;

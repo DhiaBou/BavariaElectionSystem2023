@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-const ProductTable: React.FC<any> = ({filteredData}) => {
+const TableComponent: React.FC<any> = ({filteredData}) => {
     // @ts-ignore
     return (
         <TableContainer component={Paper}>
@@ -69,7 +69,7 @@ const Vergleich = () => {
 
     return (
         <div>
-            <ProductTable filteredData={backendData}/>
+            <TableComponent filteredData={backendData}/>
         </div>
     );
 };
