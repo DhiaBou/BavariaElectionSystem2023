@@ -87,7 +87,7 @@ const Q3 = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
-                        Stimmkreiswählen
+                        Stimmkreis wählen
                     </MenuItem>
                     {ids.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
