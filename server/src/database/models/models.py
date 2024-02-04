@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, Date, ForeignKey, Double
+from sqlalchemy import Boolean, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -86,5 +86,3 @@ class Zweite_Stimme_Ohne_Kandidaten(Base):
     id = Column(Integer, primary_key=True)
     StimmkreisId = Column(Integer, ForeignKey("stimmkreis.StimmkreisId"))
     ParteiID = Column(Integer, ForeignKey("parteien.ParteiID"))
-
-

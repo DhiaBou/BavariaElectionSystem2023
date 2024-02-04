@@ -1,39 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {FormControl, List, ListItem, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 
-interface Product {
+interface BackendResponse {
     kandidat: string;
-    kurzbezeichnung: string; // or Date if your timestamps are Date objects
+    kurzbezeichnung: string;
 }
 
 const Q2 = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [selectedProductId, setSelectedProductId] = useState('');
+    const [backendData, setBackendData] = useState<BackendResponse[]>([]);
+    const [selectedId, setSelectedId] = useState('');
 
-    // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/q2')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
 
-    // Extract distinct product IDs
-    const productIds = Array.from(new Set(products.map(product => product.kurzbezeichnung)));
+    const ids = Array.from(new Set(backendData.map(row => row.kurzbezeichnung)));
 
-    // Handle selection change
     const handleSelectionChange = (event: SelectChangeEvent<string>) => {
-        setSelectedProductId(event.target.value as string);
+        setSelectedId(event.target.value as string);
     };
 
-    // Filter timestamps for selected product ID
-    const filteredTimestamps = products.filter(product => product.kurzbezeichnung === selectedProductId);
+    const filteredData = backendData.filter(row => row.kurzbezeichnung === selectedId);
 
     return (
         <div>
             <FormControl fullWidth>
                 <Select
-                    value={selectedProductId}
+                    value={selectedId}
                     onChange={handleSelectionChange}
                     displayEmpty
                     inputProps={{'aria-label': 'Without label'}}
@@ -41,14 +37,14 @@ const Q2 = () => {
                     <MenuItem value="" disabled>
                         Partei Wählen
                     </MenuItem>
-                    {productIds.map(id => (
+                    {ids.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
             <List style={{maxHeight: '50vh', overflow: 'auto'}}>
-                {filteredTimestamps.map((product, index) => (
-                    <ListItem key={index}>{product.kandidat}</ListItem>
+                {filteredData.map((row, index) => (
+                    <ListItem key={index}>{row.kandidat}</ListItem>
                 ))}
             </List>
         </div>

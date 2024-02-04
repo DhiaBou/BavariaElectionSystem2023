@@ -8,7 +8,6 @@ interface DataItem {
     count: number;
 }
 
-// Define an interface for the chart data
 interface ChartData {
     labels: string[];
     datasets: {
@@ -22,18 +21,17 @@ const ParlementVerteilung = () => {
         labels: [],
         datasets: [{
             data: [],
-            backgroundColor: [] // Will be set dynamically
+            backgroundColor: []
         }]
     });
 
-    // Array of colors for each party
     const partyColors = [
         'rgba(255, 193, 7, 0.6)',    // Vibrant Orange
         'rgba(76, 175, 80, 0.6)',    // Calming Green
         'rgba(156, 39, 176, 0.6)',   // Royal Purple
         'rgba(255, 87, 34, 0.6)',    // Fiery Red-Orange
         'rgba(33, 150, 243, 0.6)'    // Soothing Blue
-        // ... Add more colors for more parties
+
     ];
 
     useEffect(() => {
@@ -49,7 +47,7 @@ const ParlementVerteilung = () => {
                     datasets: [{
                         ...prevChartData.datasets[0],
                         data: counts,
-                        backgroundColor: partyColors.slice(0, data.length) // Use only as many colors as there are parties
+                        backgroundColor: partyColors.slice(0, data.length)
                     }]
                 }));
             })

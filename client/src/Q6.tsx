@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 
-interface Product {
+interface BackendResponse {
     kurzbezeichnung: string;
     name: string;
     stimmkreisid: string;
@@ -18,10 +18,10 @@ interface Product {
 }
 
 interface ProductTableProps {
-    filteredTimestamps: Product[]; // Assuming 'Product' is your data type
+    filteredData: BackendResponse[]; // Assuming 'BackendResponse' is your data type
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
+const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -34,18 +34,18 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredTimestamps.map((product) => (
+                    {filteredData.map((row) => (
                         <TableRow
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
-                                {product.kurzbezeichnung}
+                                {row.kurzbezeichnung}
                             </TableCell>
                             <TableCell component="th" scope="row">
-                                {product.name}
+                                {row.name}
                             </TableCell>
-                            <TableCell>{product.stimmkreisid}</TableCell>
-                            <TableCell>{product.distance}</TableCell>
+                            <TableCell>{row.stimmkreisid}</TableCell>
+                            <TableCell>{row.distance}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -56,28 +56,27 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
 
 
 const Q6 = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [selectedProductId, setSelectedProductId] = useState('');
+    const [backendData, setBackendData] = useState<BackendResponse[]>([]);
+    const [selectedId, setSelectedId] = useState('');
 
-    // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/q6')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
-    const productIds = Array.from(new Set(products.map(product => product.kurzbezeichnung)));
+    const ids = Array.from(new Set(backendData.map(row => row.kurzbezeichnung)));
     const handleSelectionChange = (event: SelectChangeEvent<string>) => {
         const newSelectedProductId = event.target.value as string;
-        setSelectedProductId(newSelectedProductId);
+        setSelectedId(newSelectedProductId);
     };
-    const filteredTimestamps = products.filter(product => product.kurzbezeichnung === selectedProductId)
+    const filteredData = backendData.filter(row => row.kurzbezeichnung === selectedId)
 
     return (
         <div>
             <FormControl fullWidth>
                 <Select
-                    value={selectedProductId}
+                    value={selectedId}
                     onChange={handleSelectionChange}
                     displayEmpty
                     inputProps={{'aria-label': 'Without label'}}
@@ -85,18 +84,18 @@ const Q6 = () => {
                     <MenuItem value="" disabled>
                         Partei wählen
                     </MenuItem>
-                    {productIds.map(id => (
+                    {ids.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            {filteredTimestamps && filteredTimestamps[0] && filteredTimestamps[0].winner_or_loser !== undefined &&
+            {filteredData && filteredData[0] && filteredData[0].winner_or_loser !== undefined &&
                 <> <a
-                    style={{fontSize: 'smaller'}}>{filteredTimestamps[0].kurzbezeichnung}: {filteredTimestamps[0].winner_or_loser}</a>
+                    style={{fontSize: 'smaller'}}>{filteredData[0].kurzbezeichnung}: {filteredData[0].winner_or_loser}</a>
                     <br/></>
             }
 
-            <ProductTable filteredTimestamps={filteredTimestamps}/>
+            <ProductTable filteredData={filteredData}/>
         </div>
     );
 };

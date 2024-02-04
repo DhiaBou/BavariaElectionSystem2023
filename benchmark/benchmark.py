@@ -15,7 +15,7 @@ api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
 workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.10}
 
 # List of different values of n
-n_values = [8, 10, 20, 50, 100]
+n_values = [20, 50,70]
 
 # List of different average wait times
 average_waits = [0.1, 1, 1.5, 2, 2.5]

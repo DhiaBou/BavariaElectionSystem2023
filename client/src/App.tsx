@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
-
-import {List, ListItem, ListItemText} from '@material-ui/core';
 import Q3 from "./Q3";
 import Q4 from "./Q4";
 import Q5 from "./Q5";
@@ -14,30 +11,6 @@ import ReloadButton from "./ReloadButton";
 import Q6 from "./Q6";
 import Einkommen from "./Einkommen";
 
-const BackendHealthComponent = () => {
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:8000/wahlkreis')
-            .then(response => response.json())
-            .then(data => setItems(data))
-            .catch(error => console.error("There was an error!", error));
-    }, []);
-
-    console.log(
-        items
-    );
-
-    return (
-        <List>
-            {items.map((item, index) => (
-                <ListItem key={index}>
-                    <ListItemText primary={item}/>
-                </ListItem>
-            ))}
-        </List>
-    );
-}
 
 function App() {
     const [view, setView] = useState('home'); // Changed to 'home' for the initial view
@@ -46,7 +19,7 @@ function App() {
         <div className="App-header">
             {view === 'home' && (
                 <>
-                    <img src={logo} className="App-logo" alt="logo"/> {/* Logo */}
+                    <h1>Wahlinformationssytem 2023</h1>
                     <button onClick={() => setView('analysis')}>Analysis</button>
                     <button onClick={() => setView('voting')}>Voting</button>
                 </>
@@ -56,8 +29,6 @@ function App() {
                 <>
                     <button onClick={() => setView('home')}>Home</button>
                     <ReloadButton/>
-                    {/* Home Button */}
-                    <BackendHealthComponent/>
                     <div style={{height: '20px'}}/>
 
                     <h5>Pie Chart</h5>
@@ -98,7 +69,6 @@ function App() {
             {view === 'voting' && (
                 <>
                     <button onClick={() => setView('home')}>Home</button>
-                    {/* Home Button */}
                     <VotingComponent/>
                 </>
             )}

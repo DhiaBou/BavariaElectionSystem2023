@@ -1,23 +1,24 @@
 DROP
-    MATERIALIZED VIEW IF EXISTS Wahlergebnisse_difference_2018_zu_2023;
+MATERIALIZED VIEW IF EXISTS Wahlergebnisse_difference_2018_zu_2023;
 DROP
-    MATERIALIZED VIEW IF EXISTS Wahlergebnisse2023;
+MATERIALIZED VIEW IF EXISTS Wahlergebnisse2023;
 DROP
-    MATERIALIZED VIEW IF EXISTS erst_stimmzettel;
+MATERIALIZED VIEW IF EXISTS erst_stimmzettel;
 DROP
-    MATERIALIZED VIEW IF EXISTS kandidat_gasammt_stimmen;
+MATERIALIZED VIEW IF EXISTS kandidat_gasammt_stimmen;
 DROP
-    MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_stimmkreis_view;
+MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_stimmkreis_view;
 DROP
-    MATERIALIZED VIEW IF EXISTS direct_candidates;
+MATERIALIZED VIEW IF EXISTS direct_candidates;
 DROP
-    MATERIALIZED VIEW IF EXISTS anteil_over_five_percent;
+MATERIALIZED VIEW IF EXISTS anteil_over_five_percent;
 DROP
-    MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_wahlkreis_view;
+MATERIALIZED VIEW IF EXISTS gesamt_stimmen_pro_partei_pro_wahlkreis_view;
 
 
 
-create MATERIALIZED view gesamt_stimmen_pro_partei_pro_wahlkreis_view as
+create
+MATERIALIZED view gesamt_stimmen_pro_partei_pro_wahlkreis_view as
 (
 WITH gesamt_erststimmen_pro_partei_pro_wahlkreis AS (SELECT w."WahlkreisId"       AS wahlkreisid,
                                                             w."Name"              AS wahlkreisname,
@@ -70,7 +71,8 @@ SELECT wahlkreisid,
        parteiname,
        gesamt_stimmen
 FROM gesamt_stimmen_pro_partei_pro_wahlkreis);
-create MATERIALIZED view anteil_over_five_percent as
+create
+MATERIALIZED view anteil_over_five_percent as
 (
 WITH totalvotes AS (SELECT g.wahlkreisid,
                            sum(g.gesamt_stimmen) AS sum
@@ -93,7 +95,8 @@ SELECT wahlkreisid,
 FROM anteil);
 
 
-create MATERIALIZED view direct_candidates as
+create
+MATERIALIZED view direct_candidates as
 (
 with candidatevotes AS (SELECT erste_stimmzettel."StimmkreisId",
                                kandidaten."KandidatID",
@@ -146,7 +149,8 @@ SELECT "WahlkreisId",
        "ParteiID",
        stimmenzahl
 FROM direct_candidates);
-create MATERIALIZED view gesamt_stimmen_pro_partei_pro_stimmkreis_view as
+create
+MATERIALIZED view gesamt_stimmen_pro_partei_pro_stimmkreis_view as
 (
 WITH gesamt_erststimmen_pro_partei_pro_stimmkreis AS (SELECT s."StimmkreisId"      AS stimmkreisid,
                                                              s."Name"              AS stimmkreisname,
@@ -200,7 +204,8 @@ SELECT stimmkreisid,
        erststimmen,
        zweite_stimme
 FROM gesamt_stimmen_pro_partei_pro_stimmkreis);
-create MATERIALIZED view kandidat_gasammt_stimmen as
+create
+MATERIALIZED view kandidat_gasammt_stimmen as
 (
 with erste_stimme as (select k."KandidatID", count(*) as count
                       from kandidaten k,
@@ -221,12 +226,14 @@ where e1."KandidatID" = k."KandidatID"
 order by gesammt_stimmen desc, "Nachname" asc
     );
 
-create MATERIALIZED view erst_stimmzettel as
+create
+MATERIALIZED view erst_stimmzettel as
 (
 select distinct "KandidatID", "StimmkreisId"
 from erste_stimmzettel);
 
-create MATERIALIZED VIEW Wahlergebnisse2023 as
+create
+MATERIALIZED VIEW Wahlergebnisse2023 as
 (
 with seats_party as (select p."ParteiID", count(*) as seats
                      from abgeordnete a,
@@ -259,7 +266,8 @@ from without_percentage w,
     );
 
 
-create MATERIALIZED VIEW Wahlergebnisse_difference_2018_zu_2023 as
+create
+MATERIALIZED VIEW Wahlergebnisse_difference_2018_zu_2023 as
 (
 select w.parteiid,
        w.parteiname,

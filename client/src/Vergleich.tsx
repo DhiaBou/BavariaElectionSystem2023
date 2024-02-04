@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-const ProductTable: React.FC<any> = ({filteredTimestamps}) => {
+const ProductTable: React.FC<any> = ({filteredData}) => {
     // @ts-ignore
     return (
         <TableContainer component={Paper}>
@@ -31,22 +31,22 @@ const ProductTable: React.FC<any> = ({filteredTimestamps}) => {
                 <TableBody>
                     {
                         // @ts-ignore
-                        filteredTimestamps.map((product) => (
+                        filteredData.map((row) => (
                             <TableRow
-                                key={product.parteiid}
+                                key={row.parteiid}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
-                                <TableCell>{product.parteiname}</TableCell>
-                                <TableCell>{product.erstimmen2018}</TableCell>
-                                <TableCell>{product.zweitstimmen2018}</TableCell>
-                                <TableCell>{product.gesammtstimmen2018}</TableCell>
-                                <TableCell>{product.erststimmen}</TableCell>
-                                <TableCell>{product.zweitestimmen}</TableCell>
-                                <TableCell>{product.gesamt_stimmen}</TableCell>
-                                <TableCell>{product.vote_percentage}</TableCell>
-                                <TableCell>{product.difference_gesamt_stimmen}</TableCell>
-                                <TableCell>{product.anzahl_sitze}</TableCell>
-                                <TableCell>{product.difference_anzahl_sitze}</TableCell>
+                                <TableCell>{row.parteiname}</TableCell>
+                                <TableCell>{row.erstimmen2018}</TableCell>
+                                <TableCell>{row.zweitstimmen2018}</TableCell>
+                                <TableCell>{row.gesammtstimmen2018}</TableCell>
+                                <TableCell>{row.erststimmen}</TableCell>
+                                <TableCell>{row.zweitestimmen}</TableCell>
+                                <TableCell>{row.gesamt_stimmen}</TableCell>
+                                <TableCell>{row.vote_percentage}</TableCell>
+                                <TableCell>{row.difference_gesamt_stimmen}</TableCell>
+                                <TableCell>{row.anzahl_sitze}</TableCell>
+                                <TableCell>{row.difference_anzahl_sitze}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>
@@ -57,19 +57,19 @@ const ProductTable: React.FC<any> = ({filteredTimestamps}) => {
 
 
 const Vergleich = () => {
-    const [products, setProducts] = useState<any[]>([]);
+    const [backendData, setBackendData] = useState<any[]>([]);
 
     // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/vergleich')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
 
     return (
         <div>
-            <ProductTable filteredTimestamps={products}/>
+            <ProductTable filteredData={backendData}/>
         </div>
     );
 };

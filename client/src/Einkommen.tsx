@@ -26,26 +26,23 @@ const Diagram: React.FC<DiagramProps> = ({data}) => {
         'rgba(33, 150, 243, 0.6)'    // Soothing Blue
     ];
 
-    // Existing datasets preparation for parties
     const datasets = uniqueParties.map((party, i) => ({
-        type: 'bar', // Specify the chart type for each dataset
+        type: 'bar',
         label: party,
         data: Object.entries(data).map(([region, values]) => values[party] || 0),
         backgroundColor: partyColors[i],
     }));
 
-    // Prepare the "einkommen" data for the line chart
     const einkommenData = {
-        type: 'line', // This dataset is a line chart
+        type: 'line',
         label: 'Einkommen',
         data: Object.entries(data).map(([region, values]) => values.einkommen),
-        borderColor: 'rgba(0, 0, 0, 0.8)', // Example color for the line
+        borderColor: 'rgba(0, 0, 0, 0.8)',
         borderWidth: 2,
         fill: false,
-        yAxisID: 'y1', // Use the secondary y-axis for this dataset
+        yAxisID: 'y1',
     };
 
-    // Add the "einkommen" dataset to the existing datasets
     // @ts-ignore
     datasets.push(einkommenData);
 
@@ -56,17 +53,17 @@ const Diagram: React.FC<DiagramProps> = ({data}) => {
 
     const options = {
         scales: {
-            y: { // Primary y-axis for bar chart datasets
+            y: {
                 beginAtZero: true,
                 position: 'left',
                 id: 'y',
             },
-            y1: { // Secondary y-axis for the "einkommen" line chart
+            y1: {
                 beginAtZero: true,
                 position: 'right',
                 id: 'y1',
                 grid: {
-                    drawOnChartArea: false, // Only show the grid for the primary y-axis
+                    drawOnChartArea: false,
                 },
             }
         },
@@ -87,17 +84,15 @@ const Diagram: React.FC<DiagramProps> = ({data}) => {
     );
 };
 const Einkommen = () => {
-    const [products, setProducts] = useState<any>([]);
+    const [backendData, setBackendData] = useState<any>([]);
 
-    // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/einkommen')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
-    console.log(products)
-    return <Diagram data={products}/>
+    return <Diagram data={backendData}/>
 }
 
 export default Einkommen

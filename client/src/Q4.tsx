@@ -8,17 +8,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-interface Product {
+interface BackendResponse {
     stimmkreisid: string;
     erststimmen_stimmkreissieger: string;
     zweitstimmen_stimmkreissieger: string;
 }
 
 interface ProductTableProps {
-    filteredTimestamps: Product[]; // Assuming 'Product' is your data type
+    filteredData: BackendResponse[];
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
+const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -30,16 +30,16 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredTimestamps.map((product) => (
+                    {filteredData.map((row) => (
                         <TableRow
-                            key={product.stimmkreisid}
+                            key={row.stimmkreisid}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
-                                {product.stimmkreisid}
+                                {row.stimmkreisid}
                             </TableCell>
-                            <TableCell>{product.erststimmen_stimmkreissieger}</TableCell>
-                            <TableCell>{product.zweitstimmen_stimmkreissieger}</TableCell>
+                            <TableCell>{row.erststimmen_stimmkreissieger}</TableCell>
+                            <TableCell>{row.zweitstimmen_stimmkreissieger}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -50,33 +50,29 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
 
 
 const Q4 = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [selectedProductId, setSelectedProductId] = useState('');
+    const [backendData, setBackendData] = useState<BackendResponse[]>([]);
+    const [selectedId, setSelectedId] = useState('');
 
-    // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/q4')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
 
-    // Extract distinct product IDs
-    const productIds = Array.from(new Set(products.map(product => product.stimmkreisid)));
+    const ids = Array.from(new Set(backendData.map(row => row.stimmkreisid)));
 
-    // Handle selection change
     const handleSelectionChange = (event: SelectChangeEvent<string>) => {
-        setSelectedProductId(event.target.value as string);
+        setSelectedId(event.target.value as string);
     };
 
-    // Filter timestamps for selected product ID
-    const filteredTimestamps = products
-        .filter(product => product.stimmkreisid === selectedProductId);
+    const filteredData = backendData
+        .filter(row => row.stimmkreisid === selectedId);
     return (
         <div>
             <FormControl fullWidth>
                 <Select
-                    value={selectedProductId}
+                    value={selectedId}
                     onChange={handleSelectionChange}
                     displayEmpty
                     inputProps={{'aria-label': 'Without label'}}
@@ -84,12 +80,12 @@ const Q4 = () => {
                     <MenuItem value="" disabled>
                         Stimmkreiswählen
                     </MenuItem>
-                    {productIds.map(id => (
+                    {ids.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <ProductTable filteredTimestamps={filteredTimestamps}/>
+            <ProductTable filteredData={filteredData}/>
         </div>
     );
 };

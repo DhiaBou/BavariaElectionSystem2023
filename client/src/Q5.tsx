@@ -7,17 +7,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-interface Product {
+interface BackendResponse {
     WahlkreisId: string;
     parteiname: string;
     anzahl_ueberhangsmandate: string;
 }
 
 interface ProductTableProps {
-    filteredTimestamps: Product[]; // Assuming 'Product' is your data type
+    filteredData: BackendResponse[];
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
+const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -29,18 +29,18 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredTimestamps.map((product) => (
+                    {filteredData.map((row) => (
                         <TableRow
-                            key={product.WahlkreisId}
+                            key={row.WahlkreisId}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
-                                {product.WahlkreisId}
+                                {row.WahlkreisId}
                             </TableCell>
                             <TableCell component="th" scope="row">
-                                {product.parteiname}
+                                {row.parteiname}
                             </TableCell>
-                            <TableCell>{product.anzahl_ueberhangsmandate}</TableCell>
+                            <TableCell>{row.anzahl_ueberhangsmandate}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -51,19 +51,18 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredTimestamps}) => {
 
 
 const Q5 = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [backendData, setBackendData] = useState<BackendResponse[]>([]);
 
-    // Fetch data from the server
     useEffect(() => {
         fetch('http://localhost:8000/wahlkreis/q5')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setBackendData(data))
             .catch(error => console.error('There was an error fetching the data', error));
     }, []);
 
     return (
         <div>
-            <ProductTable filteredTimestamps={products}/>
+            <ProductTable filteredData={backendData}/>
         </div>
     );
 };

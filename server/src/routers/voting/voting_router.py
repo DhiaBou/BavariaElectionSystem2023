@@ -13,18 +13,6 @@ from database.scripts.analysis.B6.queries import (
 from stimmabgabe.vote import can_vote, remove_token_from_csv
 
 
-class FirstVote(BaseModel):
-    token: str
-    code: str
-    first_vote: str
-
-
-class SecondVote(BaseModel):
-    token: str
-    code: str
-    second_vote: str
-
-
 class Vote(BaseModel):
     token: str
     code: str

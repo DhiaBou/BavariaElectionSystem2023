@@ -50,13 +50,12 @@ const VotingComponent = () => {
             const response = await axios.get('http://localhost:8000/vote', {
                 params: {voter_id, code: stimmkreis}
             });
-            // Assuming the response returns two lists for first and second votes
 
             setToken(response.data[0]);
             setFirstVoteCandidates(response.data[1]);
             setSecondVoteCandidates(response.data[2]);
             setError('');
-            setCurrentStep(3); // Move to second vote
+            setCurrentStep(3);
 
 
         } catch (err) {
@@ -69,7 +68,6 @@ const VotingComponent = () => {
 
     const handleSubmitVote = async () => {
         try {
-            // Submit the second vote
             await axios.post('http://localhost:8000/vote/submit_vote', {
                 token,
                 code: stimmkreis,
@@ -77,7 +75,7 @@ const VotingComponent = () => {
                 second_vote: selectedSecondVote,
             });
             console.log("Second vote submitted successfully");
-            setCurrentStep(4); // Voting completed
+            setCurrentStep(4);
         } catch (err) {
             console.error("Error submitting second vote", err);
         }

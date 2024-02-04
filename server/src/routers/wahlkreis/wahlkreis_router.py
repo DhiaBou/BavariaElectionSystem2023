@@ -17,8 +17,8 @@ wahlkreis_router = APIRouter(
 
 
 @wahlkreis_router.get("/")
-async def get_wahlkreis():
-    return ["3asba"]
+async def get_health():
+    return []
 
 
 @wahlkreis_router.get("/q1")
@@ -29,11 +29,6 @@ async def query1():
 @wahlkreis_router.get("/reload")
 async def query1():
     return reload()
-
-
-@wahlkreis_router.get("/q2")
-async def query2():
-    return q2()
 
 
 @wahlkreis_router.get("/q2")
@@ -59,11 +54,6 @@ async def query5():
 @wahlkreis_router.get("/q6")
 async def query6():
     return q6()
-
-
-@wahlkreis_router.get("/1")
-async def get_q1():
-    return ["3asbbbba"]
 
 
 @wahlkreis_router.get("/einkommen")
