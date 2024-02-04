@@ -63,8 +63,10 @@ async def submit_vote(vote: Vote):
             # Commit the changes
             db.commit()
             remove_token_from_csv(vote.token)
+
             async def r():
                 reload()
+
             create_task(r())
             return {"message": "Vote received"}
 

@@ -90,3 +90,5 @@ python server/src/stimmabgabe/generate_tokens.py
 
 With the tokens generated, you can now proceed to vote through the frontend application.
 
+More about voting in: [voting doc.pdf](Artifacts%2Fvoting%20doc.pdf).
+

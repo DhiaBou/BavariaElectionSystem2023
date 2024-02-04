@@ -1,9 +1,10 @@
 import csv
-import requests
-import time
 import random
 import threading
+import time
 from statistics import mean
+
+import requests
 
 api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
                  'q2': 'http://localhost:8000/wahlkreis/q2',
@@ -30,6 +31,7 @@ for n_terminals in n_values:
         print(average_wait)
         results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
 
+
         # Thread Worker Function
         def simulate_terminal():
             for i in range(requests_per_terminal):
@@ -48,6 +50,7 @@ for n_terminals in n_values:
                 results_lock.release()
 
                 time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
+
 
         # To ensure thread-safe operations on the results dictionary
         results_lock = threading.Lock()
