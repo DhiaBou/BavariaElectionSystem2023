@@ -15,56 +15,59 @@ api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
 workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.10}
 
 # List of different values of n
-n_values = [20, 50,70]
+n_values = [8, 10]
 
 # List of different average wait times
-average_waits = [0.1, 1, 1.5, 2, 2.5]
+average_waits = [1, 2]
 
 # Results Storage
 all_results = {}
 
-for n_terminals, average_wait in zip(n_values, average_waits):
-    results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
+for n_terminals in n_values:
+    for average_wait in average_waits:
+        results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
 
-    # Thread Worker Function
-    def simulate_terminal():
-        endpoint = random.choices(list(api_endpoints.keys()), weights=workload_distribution.values())[0]
-        start_time = time.time()
-        response = requests.get(api_endpoints[endpoint])
-        url = response.url
-        duration = time.time() - start_time
+        # Thread Worker Function
+        def simulate_terminal():
+            for _ in range(requests_per_terminal):
+                endpoint = random.choices(list(api_endpoints.keys()), weights=workload_distribution.values())[0]
+                start_time = time.time()
+                response = requests.get(api_endpoints[endpoint])
+                url = response.url
+                duration = time.time() - start_time
 
-        # Record duration and increment hit count
-        results_lock.acquire()
-        results[endpoint]['durations'].append(duration)
-        results[endpoint]['hits'] += 1
-        results_lock.release()
+                # Record duration and increment hit count
+                results_lock.acquire()
+                results[endpoint]['durations'].append(duration)
+                results[endpoint]['hits'] += 1
+                results_lock.release()
 
-        time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
+                time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
 
-    # To ensure thread-safe operations on the results dictionary
-    results_lock = threading.Lock()
+        # To ensure thread-safe operations on the results dictionary
+        results_lock = threading.Lock()
 
-    threads = []
-    #requests_per_terminal = 1  # Number of requests per terminal
+        threads = []
+        requests_per_terminal = 100  # Number of requests per terminal
 
-    for _ in range(n_terminals):
-        t = threading.Thread(target=simulate_terminal)
-        threads.append(t)
-        t.start()
+        for _ in range(n_terminals):
+            t = threading.Thread(target=simulate_terminal)
+            threads.append(t)
+            t.start()
 
-    # Wait for all threads to complete
-    for t in threads:
-        t.join()
+        # Wait for all threads to complete
+        for t in threads:
+            t.join()
 
-    all_results[n_terminals] = results
+        all_results[(n_terminals, average_wait)] = results
 
 # Write Results to One CSV File
-with open('benchmark_results.csv', mode='w', newline='') as file:
+with open('benchmark_results_multi_threaded.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(['N', 'Average Wait (seconds)', 'Endpoint', 'Mean Duration (seconds)', 'Min Duration (seconds)', 'Max Duration (seconds)', 'Hits'])
+    writer.writerow(['N', 'Average Wait (seconds)', 'Endpoint', 'Mean Duration (seconds)', 'Min Duration (seconds)',
+                     'Max Duration (seconds)', 'Hits'])
 
-    for n, results in all_results.items():
+    for (n, wait), results in all_results.items():
         total_hits = sum([data['hits'] for data in results.values()])
 
         for endpoint, data in results.items():
@@ -75,4 +78,6 @@ with open('benchmark_results.csv', mode='w', newline='') as file:
             hits = data['hits']
             percentage_of_hits = (hits / total_hits) * 100 if total_hits > 0 else 0
 
-            writer.writerow([n, average_waits[n_values.index(n)], endpoint, f"{mean_duration:.2f}", f"{min_duration:.6f}", f"{max_duration:.6f}", hits])
+            writer.writerow(
+                [n, wait, endpoint, f"{mean_duration:.2f}", f"{min_duration:.6f}",
+                 f"{max_duration:.6f}", hits])
