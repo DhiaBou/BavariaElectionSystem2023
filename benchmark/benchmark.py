@@ -1,26 +1,23 @@
 import csv
-
 import requests
 import time
 import random
 import threading
 from statistics import mean
 
-
 api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
                  'q2': 'http://localhost:8000/wahlkreis/q2',
                  'q3': 'http://localhost:8000/wahlkreis/q3',
                  'q4': 'http://localhost:8000/wahlkreis/q4',
                  'q5': 'http://localhost:8000/wahlkreis/q5',
-                 'q6': 'http://localhost:8000/wahlkreis/q6'
+                 'q6': 'http://localhost:8000/wahlkreis/q6'}
 
-                 }
-workload_distribution = {'q1': 25, 'q2': 10, 'q3': 10, 'q4': 10, 'q5': 10, 'q6': 10}
+workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.10}
 
 # Benchmarking Parameters
-n_terminals = 100  # Number of simulated clients
-requests_per_terminal = 10  # Number of requests per terminal
-average_wait = 1.0  # Average wait time in seconds
+n_terminals = 8  # Number of simulated clients
+requests_per_terminal = 100  # Number of requests per terminal
+average_wait = 0.01  # Average wait time in seconds
 
 # Results Storage
 results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
@@ -41,7 +38,6 @@ def simulate_terminal():
         results[endpoint]['hits'] += 1
         results_lock.release()
 
-        print("Endpoint: " + endpoint + " called " )
         time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
 
 
@@ -59,12 +55,30 @@ for t in threads:
     t.join()
 
 # Write Results to CSV and Print
-with open('benchmark_results.csv', mode='w', newline='') as file:
+with open('benchmark_results_n=50.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(['Endpoint', 'Mean Duration (seconds)', 'Hits'])
+    writer.writerow(['Endpoint', 'Mean Duration (seconds)', 'Min Duration (seconds)', 'Max Duration (seconds)', 'Hits'])
+
+    total_hits = sum([data['hits'] for data in results.values()])
 
     for endpoint, data in results.items():
-        mean_duration = mean(data['durations']) if data['durations'] else 0
+        durations = data['durations']
+        mean_duration = mean(durations) if durations else 0
+        min_duration = min(durations) if durations else 0
+        max_duration = max(durations) if durations else 0
         hits = data['hits']
-        writer.writerow([endpoint, f"{mean_duration:.2f}", hits])
-        print(f"{endpoint}: Mean duration = {mean_duration:.6f} seconds, Hits = {hits}")
+        percentage_of_hits = (hits / total_hits) * 100 if total_hits > 0 else 0
+
+        writer.writerow([endpoint, f"{mean_duration:.2f}", f"{min_duration:.6f}", f"{max_duration:.6f}", hits])
+        print(
+            f"{endpoint}: Mean duration = {mean_duration:.6f} seconds, Min = {min_duration:.6f} seconds, Max = {max_duration:.6f} seconds, Hits = {hits}, Percentage of Hits = {percentage_of_hits:.2f}%")
+
+# Calculate the sum of all hits
+total_hits_sum = sum([data['hits'] for data in results.values()])
+print(f"Total Hits Sum: {total_hits_sum}")
+
+# Calculate the percentage of hits for each endpoint
+for endpoint, data in results.items():
+    hits = data['hits']
+    percentage_of_hits = (hits / total_hits_sum) * 100 if total_hits_sum > 0 else 0
+    print(f"{endpoint}: Percentage of Hits = {percentage_of_hits:.2f}%")
