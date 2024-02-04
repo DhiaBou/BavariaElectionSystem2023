@@ -35,23 +35,23 @@ function App() {
                     <ParlementVerteilung/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Q2</h5>
+                    <h5>Q2: Abgeordnete pro Partei</h5>
                     <Q2/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Q3</h5>
+                    <h5>Q3: Wahlergebnisse pro Stimmkreis</h5>
                     <Q3/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Q4</h5>
+                    <h5>Q4: Stimmkreissieger</h5>
                     <Q4/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Q5</h5>
+                    <h5>Q5: Anzahl Überhangsmandate</h5>
                     <Q5/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Q6</h5>
+                    <h5>Q6: Knappeste Sieger</h5>
                     <Q6/>
                     <div style={{height: '20px'}}/>
 
