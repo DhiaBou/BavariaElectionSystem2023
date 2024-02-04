@@ -7,15 +7,15 @@ import threading
 from statistics import mean
 
 
-api_endpoints = {'q1': 'http://localhost:3000/wahlkreis/q1',
-                 'q2': 'http://localhost:3000/wahlkreis/q2',
-                 'q3': 'http://localhost:3000/wahlkreis/q3',
-                 'q4': 'http://localhost:3000/wahlkreis/q4',
-                 'q5': 'http://localhost:3000/wahlkreis/q5',
-                 'q6-winners': 'http://localhost:3000/wahlkreis/q6-winners',
-                 'q6-losers': 'http://localhost:3000/wahlkreis/q6-losers'
+api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
+                 'q2': 'http://localhost:8000/wahlkreis/q2',
+                 'q3': 'http://localhost:8000/wahlkreis/q3',
+                 'q4': 'http://localhost:8000/wahlkreis/q4',
+                 'q5': 'http://localhost:8000/wahlkreis/q5',
+                 'q6': 'http://localhost:8000/wahlkreis/q6'
+
                  }
-workload_distribution = {'q1': 25, 'q2': 10, 'q3': 10, 'q4': 10, 'q5': 10, 'q6-winners': 5, 'q6-losers': 5}
+workload_distribution = {'q1': 25, 'q2': 10, 'q3': 10, 'q4': 10, 'q5': 10, 'q6': 10}
 
 # Benchmarking Parameters
 n_terminals = 100  # Number of simulated clients
@@ -32,6 +32,7 @@ def simulate_terminal():
         endpoint = random.choices(list(api_endpoints.keys()), weights=workload_distribution.values())[0]
         start_time = time.time()
         response = requests.get(api_endpoints[endpoint])
+        url = response.url
         duration = time.time() - start_time
 
         # Record duration and increment hit count
@@ -40,6 +41,7 @@ def simulate_terminal():
         results[endpoint]['hits'] += 1
         results_lock.release()
 
+        print("Endpoint: " + endpoint + " called " )
         time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
 
 
