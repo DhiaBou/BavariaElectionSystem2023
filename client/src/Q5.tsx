@@ -23,8 +23,8 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Wahlkreis Id</TableCell>
-                        <TableCell>parteiname</TableCell>
+                        <TableCell>Wahlkreis ID</TableCell>
+                        <TableCell>Parteinamen</TableCell>
                         <TableCell>Anzahl Ueberhangsmandate</TableCell>
                     </TableRow>
                 </TableHead>

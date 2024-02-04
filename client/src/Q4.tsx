@@ -25,8 +25,8 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Stimmkreis ID</TableCell>
-                        <TableCell>erststimmen Stimmkreissieger</TableCell>
-                        <TableCell>zweitstimmen Stimmkreissieger</TableCell>
+                        <TableCell>Erststimmen Stimmkreissieger</TableCell>
+                        <TableCell>Zweitstimmen Stimmkreissieger</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -78,7 +78,7 @@ const Q4 = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="" disabled>
-                        Stimmkreiswählen
+                        Stimmkreis wählen
                     </MenuItem>
                     {ids.map(id => (
                         <MenuItem key={id} value={id}>{id}</MenuItem>

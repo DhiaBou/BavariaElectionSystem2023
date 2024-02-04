@@ -20,8 +20,8 @@ function App() {
             {view === 'home' && (
                 <>
                     <h1>Wahlinformationssytem 2023</h1>
-                    <button onClick={() => setView('analysis')}>Analysis</button>
-                    <button onClick={() => setView('voting')}>Voting</button>
+                    <button onClick={() => setView('analysis')}>Analyse</button>
+                    <button onClick={() => setView('voting')}>Stimmabgabe</button>
                 </>
             )}
 
@@ -31,7 +31,7 @@ function App() {
                     <ReloadButton/>
                     <div style={{height: '20px'}}/>
 
-                    <h5>Pie Chart</h5>
+                    <h5>Sitzverteilung</h5>
                     <ParlementVerteilung/>
                     <div style={{height: '20px'}}/>
 

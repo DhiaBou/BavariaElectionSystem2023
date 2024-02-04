@@ -29,11 +29,11 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Partei Name</TableCell>
+                        <TableCell>Parteinamen</TableCell>
                         <TableCell>Erststimmen</TableCell>
                         <TableCell>Zweitstimmen</TableCell>
-                        <TableCell>Gesamt Stimmen</TableCell>
-                        <TableCell>Percentage</TableCell>
+                        <TableCell>Gesamte Stimmen</TableCell>
+                        <TableCell>Prozentsatz</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

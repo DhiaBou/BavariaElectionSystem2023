@@ -88,7 +88,7 @@ const VotingComponent = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Voter ID"
+                                label="Wähler ID"
                                 value={voter_id}
                                 onChange={handleVoterIdChange}
                                 margin="normal"
@@ -112,7 +112,7 @@ const VotingComponent = () => {
                                 color="primary"
                                 fullWidth
                             >
-                                Identify
+                                Anmelden
                             </Button>
                         </Grid>
                     </Grid>
@@ -130,7 +130,7 @@ const VotingComponent = () => {
                         <Card className="vote-section" style={{overflow: 'auto', height: '600px'}}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
-                                    First Vote
+                                    Erststimme
                                 </Typography>
                                 <RadioGroup name="firstVoteCandidates" value={selectedFirstVote}
                                             onChange={handleFirstVoteChange}>
@@ -151,7 +151,7 @@ const VotingComponent = () => {
                             <Card className="vote-section" style={{overflow: 'auto', height: '600px'}}>
                                 <CardContent>
                                     <Typography variant="h5" component="h2">
-                                        Second Vote
+                                        Zweitstimme
                                     </Typography>
                                     <RadioGroup name="secondVoteCandidates" value={selectedSecondVote}
                                                 onChange={handleSecondVoteChange}>
@@ -176,7 +176,7 @@ const VotingComponent = () => {
                     disabled={!selectedSecondVote && !selectedFirstVote}
                     fullWidth
                 >
-                    Submit Vote
+                    Stimme abgeben
                 </Button>
 
                 {error && <p>{error}</p>}

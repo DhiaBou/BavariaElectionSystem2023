@@ -30,7 +30,7 @@ const ProductTable: React.FC<ProductTableProps> = ({filteredData}) => {
                         <TableCell>Partei</TableCell>
                         <TableCell>Kandidatenname</TableCell>
                         <TableCell>Stimmkreis</TableCell>
-                        <TableCell>Distanz zum nächsten oder zum ersten</TableCell>
+                        <TableCell>Abstand zum nächsten oder zum ersten</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
