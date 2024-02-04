@@ -57,6 +57,9 @@ cd src
 uvicorn main:app --reload
 ```
 
+### More Documentation
+More documentations are found under [README.md](server%2FREADME.md).
+
 ## Frontend Setup
 
 ### Step 1: Install Dependencies
