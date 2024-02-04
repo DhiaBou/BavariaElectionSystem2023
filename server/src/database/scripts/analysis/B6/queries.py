@@ -40,7 +40,7 @@ def get_income_pro_stimmkreis():
     return result_list
 
 
-def q1():
+async def q1():
     with open(Path(__file__).parent / "q1.sql", "r") as file:
         query = file.read()
 
@@ -87,7 +87,7 @@ def get_income_pro_wahlkreis():
     return transformed_data
 
 
-def q2():
+async def q2():
     with open(Path(__file__).parent / "q2.sql", "r") as file:
         query = file.read()
 
@@ -119,7 +119,7 @@ def diffference_2023_2018():
     return result_list
 
 
-def reload():
+async def reload():
     with open(Path(__file__).parent / "views_code.sql", "r") as file:
         query = file.read().split("--")
 
@@ -133,7 +133,7 @@ def reload():
     return 'ok'
 
 
-def q3():
+async def q3():
     with open(Path(__file__).parent / "q3.sql", "r") as file:
         query = file.read()
 
@@ -149,7 +149,7 @@ def q3():
     return result_list
 
 
-def q4():
+async def q4():
     with open(Path(__file__).parent / "q4.sql", "r") as file:
         query = file.read()
 
@@ -165,7 +165,7 @@ def q4():
     return result_list
 
 
-def q5():
+async def q5():
     with open(Path(__file__).parent / "q5.sql", "r") as file:
         query = file.read()
 
@@ -181,7 +181,7 @@ def q5():
     return result_list
 
 
-def q6():
+async def q6():
     with open(Path(__file__).parent / "q6.sql", "r") as file:
         query = file.read()
 

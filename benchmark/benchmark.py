@@ -12,29 +12,34 @@ api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
                  'q5': 'http://localhost:8000/wahlkreis/q5',
                  'q6': 'http://localhost:8000/wahlkreis/q6'}
 
-workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.10}
+workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.20}
 
 # List of different values of n
-n_values = [8, 10]
+n_values = [20, 70]
 
 # List of different average wait times
-average_waits = [1, 2]
+average_waits = [0.1, 0.2]
 
 # Results Storage
 all_results = {}
 
 for n_terminals in n_values:
     for average_wait in average_waits:
+        print('-----------------')
+        print(n_terminals)
+        print(average_wait)
         results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
 
         # Thread Worker Function
         def simulate_terminal():
-            for _ in range(requests_per_terminal):
+            for i in range(requests_per_terminal):
+                print(i)
                 endpoint = random.choices(list(api_endpoints.keys()), weights=workload_distribution.values())[0]
                 start_time = time.time()
                 response = requests.get(api_endpoints[endpoint])
                 url = response.url
                 duration = time.time() - start_time
+                print(duration)
 
                 # Record duration and increment hit count
                 results_lock.acquire()
@@ -48,7 +53,7 @@ for n_terminals in n_values:
         results_lock = threading.Lock()
 
         threads = []
-        requests_per_terminal = 100  # Number of requests per terminal
+        requests_per_terminal = 20  # Number of requests per terminal
 
         for _ in range(n_terminals):
             t = threading.Thread(target=simulate_terminal)

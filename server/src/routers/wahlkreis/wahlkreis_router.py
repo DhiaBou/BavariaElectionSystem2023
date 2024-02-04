@@ -23,7 +23,7 @@ async def get_health():
 
 @wahlkreis_router.get("/q1")
 async def query1():
-    return q1()
+    return await q1()
 
 
 @wahlkreis_router.get("/reload")
@@ -33,27 +33,27 @@ async def query1():
 
 @wahlkreis_router.get("/q2")
 async def query2():
-    return q2()
+    return await q2()
 
 
 @wahlkreis_router.get("/q3")
 async def query3():
-    return q3()
+    return await q3()
 
 
 @wahlkreis_router.get("/q4")
 async def query4():
-    return q4()
+    return await q4()
 
 
 @wahlkreis_router.get("/q5")
 async def query5():
-    return q5()
+    return await q5()
 
 
 @wahlkreis_router.get("/q6")
 async def query6():
-    return q6()
+    return await q6()
 
 
 @wahlkreis_router.get("/einkommen")
