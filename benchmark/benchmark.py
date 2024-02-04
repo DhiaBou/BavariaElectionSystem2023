@@ -14,18 +14,20 @@ api_endpoints = {'q1': 'http://localhost:8000/wahlkreis/q1',
 
 workload_distribution = {'q1': 0.25, 'q2': 0.10, 'q3': 0.25, 'q4': 0.10, 'q5': 0.10, 'q6': 0.10}
 
-# Benchmarking Parameters
-n_terminals = 8  # Number of simulated clients
-requests_per_terminal = 100  # Number of requests per terminal
-average_wait = 0.01  # Average wait time in seconds
+# List of different values of n
+n_values = [8, 10, 20, 50, 100]
+
+# List of different average wait times
+average_waits = [0.1, 1, 1.5, 2, 2.5]
 
 # Results Storage
-results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
+all_results = {}
 
+for n_terminals, average_wait in zip(n_values, average_waits):
+    results = {endpoint: {'durations': [], 'hits': 0} for endpoint in api_endpoints}
 
-# Thread Worker Function
-def simulate_terminal():
-    for _ in range(requests_per_terminal):
+    # Thread Worker Function
+    def simulate_terminal():
         endpoint = random.choices(list(api_endpoints.keys()), weights=workload_distribution.values())[0]
         start_time = time.time()
         response = requests.get(api_endpoints[endpoint])
@@ -40,45 +42,37 @@ def simulate_terminal():
 
         time.sleep(random.uniform(0.8 * average_wait, 1.2 * average_wait))
 
+    # To ensure thread-safe operations on the results dictionary
+    results_lock = threading.Lock()
 
-# To ensure thread-safe operations on the results dictionary
-results_lock = threading.Lock()
+    threads = []
+    #requests_per_terminal = 1  # Number of requests per terminal
 
-threads = []
-for _ in range(n_terminals):
-    t = threading.Thread(target=simulate_terminal)
-    threads.append(t)
-    t.start()
+    for _ in range(n_terminals):
+        t = threading.Thread(target=simulate_terminal)
+        threads.append(t)
+        t.start()
 
-# Wait for all threads to complete
-for t in threads:
-    t.join()
+    # Wait for all threads to complete
+    for t in threads:
+        t.join()
 
-# Write Results to CSV and Print
-with open('benchmark_results_n=50.csv', mode='w', newline='') as file:
+    all_results[n_terminals] = results
+
+# Write Results to One CSV File
+with open('benchmark_results.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(['Endpoint', 'Mean Duration (seconds)', 'Min Duration (seconds)', 'Max Duration (seconds)', 'Hits'])
+    writer.writerow(['N', 'Average Wait (seconds)', 'Endpoint', 'Mean Duration (seconds)', 'Min Duration (seconds)', 'Max Duration (seconds)', 'Hits'])
 
-    total_hits = sum([data['hits'] for data in results.values()])
+    for n, results in all_results.items():
+        total_hits = sum([data['hits'] for data in results.values()])
 
-    for endpoint, data in results.items():
-        durations = data['durations']
-        mean_duration = mean(durations) if durations else 0
-        min_duration = min(durations) if durations else 0
-        max_duration = max(durations) if durations else 0
-        hits = data['hits']
-        percentage_of_hits = (hits / total_hits) * 100 if total_hits > 0 else 0
+        for endpoint, data in results.items():
+            durations = data['durations']
+            mean_duration = mean(durations) if durations else 0
+            min_duration = min(durations) if durations else 0
+            max_duration = max(durations) if durations else 0
+            hits = data['hits']
+            percentage_of_hits = (hits / total_hits) * 100 if total_hits > 0 else 0
 
-        writer.writerow([endpoint, f"{mean_duration:.2f}", f"{min_duration:.6f}", f"{max_duration:.6f}", hits])
-        print(
-            f"{endpoint}: Mean duration = {mean_duration:.6f} seconds, Min = {min_duration:.6f} seconds, Max = {max_duration:.6f} seconds, Hits = {hits}, Percentage of Hits = {percentage_of_hits:.2f}%")
-
-# Calculate the sum of all hits
-total_hits_sum = sum([data['hits'] for data in results.values()])
-print(f"Total Hits Sum: {total_hits_sum}")
-
-# Calculate the percentage of hits for each endpoint
-for endpoint, data in results.items():
-    hits = data['hits']
-    percentage_of_hits = (hits / total_hits_sum) * 100 if total_hits_sum > 0 else 0
-    print(f"{endpoint}: Percentage of Hits = {percentage_of_hits:.2f}%")
+            writer.writerow([n, average_waits[n_values.index(n)], endpoint, f"{mean_duration:.2f}", f"{min_duration:.6f}", f"{max_duration:.6f}", hits])
