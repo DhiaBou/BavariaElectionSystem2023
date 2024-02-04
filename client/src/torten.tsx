@@ -22,7 +22,7 @@ interface ProductTableProps {
 const TableComponent: React.FC<ProductTableProps> = ({filteredData}) => {
     return (
         <TableContainer component={Paper}>
-            <Table sx={{minWidth: 650}} aria-label="simple table">
+            <Table sx={{minWidth: 400}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell>Parteinamen</TableCell>
@@ -105,7 +105,7 @@ const ParlementVerteilung = () => {
             <Grid item xs={4} style={{display: 'flex', justifyContent: 'center'}}>
                 <Pie data={chartData} width={60} height={60}/>
             </Grid>
-            <Grid item xs={6} style={{display: 'flex', justifyContent: 'center'}}>
+            <Grid item xs={4} style={{display: 'flex', justifyContent: 'center'}}>
                 <TableComponent filteredData={backendData}/>
             </Grid>
         </Grid>
