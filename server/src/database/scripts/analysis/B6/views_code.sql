@@ -234,6 +234,8 @@ from erste_stimmzettel);
 
 delete
 from abgeordnete;
+delete from ueberhangsmandate;
+delete from ausgleichsmandate;
 --
 create
 MATERIALIZED VIEW Wahlergebnisse2023 as

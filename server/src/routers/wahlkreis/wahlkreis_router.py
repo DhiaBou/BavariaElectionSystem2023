@@ -28,7 +28,7 @@ async def query1():
 
 @wahlkreis_router.get("/reload")
 async def query1():
-    return reload()
+    return await reload()
 
 
 @wahlkreis_router.get("/q2")
