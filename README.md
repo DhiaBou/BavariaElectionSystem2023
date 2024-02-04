@@ -42,7 +42,7 @@ alembic upgrade head
 
 ### Step 4: Populate Database
 
-Run the provided script to fill the database tables with initial data.
+Run the provided script to fill the database tables with initial data. You might need to set ``src`` as the source folder.
 
 ```sh
 python src/database/scripts/generation/fill_tables.py
@@ -65,7 +65,7 @@ Navigate to the client directory and install the necessary npm packages.
 
 ```sh
 cd client
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### Step 2: Start the Client Application
@@ -90,6 +90,3 @@ python server/src/stimmabgabe/generate_tokens.py
 
 With the tokens generated, you can now proceed to vote through the frontend application.
 
-## Conclusion
-
-Follow these steps to set up and launch the Bayern Election 2023 application. If you encounter any issues, refer to the specific instructions provided within the scripts or contact the development team for support. Happy voting!

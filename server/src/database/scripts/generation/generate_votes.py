@@ -2,14 +2,16 @@ import os
 
 import pandas as pd
 
-from src.database.database import get_db
-from src.database.models.models import (
+from database.database import get_db
+from database.models.models import (
     Kandidaten,
     Erste_Stimmen,
     Zweite_Stimmzettel,
     Zweite_Stimme_Ohne_Kandidaten,
     Stimmkreis,
 )
+
+
 def generate_votes():
     current_directory = os.getcwd()
 
@@ -36,13 +38,11 @@ def generate_votes():
             else:
                 stimmKreise[l.WahlkreisId].append(l.StimmkreisId)
 
-
     def get_value(value):
         try:
             return int(value), True
         except:
             return int(value[:-1]), False
-
 
     for i in range(907, 900, -1):
         print(i)

@@ -232,6 +232,9 @@ MATERIALIZED view erst_stimmzettel as
 select distinct "KandidatID", "StimmkreisId"
 from erste_stimmzettel);
 
+delete
+from abgeordnete;
+--
 create
 MATERIALIZED VIEW Wahlergebnisse2023 as
 (

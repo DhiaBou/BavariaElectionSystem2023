@@ -1,11 +1,11 @@
-INSERT INTO wahlkreis("WahlkreisId", "Name")
-VALUES (901, 'Oberbayern'),
-       (902, 'Niederbayern'),
-       (903, 'Oberpfalz'),
-       (904, 'Oberfranken'),
-       (905, 'Mittelfranken'),
-       (906, 'Unterfranken'),
-       (907, 'Schwaben');
+INSERT INTO wahlkreis("WahlkreisId", "Name", "Abgeordnetenmandate")
+VALUES (901, 'Oberbayern', 61),
+       (902, 'Niederbayern', 18),
+       (903, 'Oberpfalz', 16),
+       (904, 'Oberfranken', 16),
+       (905, 'Mittelfranken', 24),
+       (906, 'Unterfranken', 19),
+       (907, 'Schwaben', 26);
 
 INSERT INTO stimmkreis("WahlkreisId", "StimmkreisId", "Name")
 VALUES (901, 101, 'München-Hadern'),
@@ -125,17 +125,28 @@ VALUES ('Christlich-Soziale Union in Bayern e.V.', 'CSU'),
 
 CREATE TABLE IF NOT EXISTS wahlergebnisse2018
 (
-    Partei                       VARCHAR(255),
-    Erststimmen                  INT,
-    Zweitstimmen                 INT,
-    Gesamtstimmen                INT,
-    SummeInProzent               DECIMAL(5, 2),
-    DifferenzZu2013              DECIMAL(5, 2),
-    SitzeGesamt                  INT,
-    DifferenzSitzeZu2013         INT,
-    Direktmandate                INT,
+    Partei VARCHAR
+(
+    255
+),
+    Erststimmen INT,
+    Zweitstimmen INT,
+    Gesamtstimmen INT,
+    SummeInProzent DECIMAL
+(
+    5,
+    2
+),
+    DifferenzZu2013 DECIMAL
+(
+    5,
+    2
+),
+    SitzeGesamt INT,
+    DifferenzSitzeZu2013 INT,
+    Direktmandate INT,
     DifferenzDirektmandateZu2013 INT
-);
+    );
 
 INSERT INTO wahlergebnisse2018 (Partei, Erststimmen, Zweitstimmen, Gesamtstimmen, SummeInProzent, DifferenzZu2013,
                                 SitzeGesamt, DifferenzSitzeZu2013, Direktmandate, DifferenzDirektmandateZu2013)

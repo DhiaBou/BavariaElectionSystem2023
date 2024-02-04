@@ -1,4 +1,5 @@
 import logging
+from asyncio import create_task
 from http.client import HTTPException
 
 from fastapi import APIRouter
@@ -8,7 +9,7 @@ from database.database import get_db
 from database.models.models import Erste_Stimmen, Zweite_Stimmzettel, Zweite_Stimme_Ohne_Kandidaten
 from database.scripts.analysis.B6.queries import (
     get_stimmzettel,
-    get_zweit_stimmzettel,
+    get_zweit_stimmzettel, reload,
 )
 from stimmabgabe.vote import can_vote, remove_token_from_csv
 
@@ -62,6 +63,9 @@ async def submit_vote(vote: Vote):
             # Commit the changes
             db.commit()
             remove_token_from_csv(vote.token)
+            async def r():
+                reload()
+            create_task(r())
             return {"message": "Vote received"}
 
         except Exception as e:

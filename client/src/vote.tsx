@@ -98,8 +98,7 @@ const VotingComponent = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Code"
-                                type="password"
+                                label="Stimmkreis"
                                 value={stimmkreis}
                                 onChange={handleCodeChange}
                                 margin="normal"

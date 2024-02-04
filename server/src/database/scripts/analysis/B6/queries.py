@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from database.scripts.analysis.find_angeordnete import create_abgeordnete
+
 
 def get_auslaender_quote():
     query = """
@@ -119,10 +121,14 @@ def diffference_2023_2018():
 
 def reload():
     with open(Path(__file__).parent / "views_code.sql", "r") as file:
-        query = file.read()
+        query = file.read().split("--")
 
     with get_db() as db:
-        db.execute(text(query))
+        db.execute(text(query[0]))
+        db.commit()
+        create_abgeordnete()
+        db.commit()
+        db.execute(text(query[1]))
         db.commit()
     return 'ok'
 
@@ -220,9 +226,3 @@ def get_zweit_stimmzettel(stimmkreis):
         ]
         result_list += list(set(row[1] + " __" + str(row[3]) for row in result))
     return ["-- keine Wahl -- __0"] + sorted(result_list)
-
-
-if __name__ == "__main__":
-    result_query = get_income_pro_wahlkreis()
-    for row in result_query:
-        print(row)

@@ -1,8 +1,11 @@
-import pandas as pd
 import os
 
-from src.database.database import get_db
-from src.database.models.models import Parteien, Kandidaten
+import pandas as pd
+
+from database.database import get_db
+from database.models.models import Parteien, Kandidaten
+
+
 def create_candidates():
     party_name_id = {}
     kandidaten = []
@@ -11,7 +14,6 @@ def create_candidates():
         llist: list[Parteien] = db.query(Parteien).all()
         for l in llist:
             party_name_id[l.kurzbezeichnung] = l.ParteiID
-
 
     current_directory = os.getcwd()
 
