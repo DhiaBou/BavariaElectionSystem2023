@@ -123,7 +123,7 @@ VALUES ('Christlich-Soziale Union in Bayern e.V.', 'CSU'),
        ('Partei für Gesundheitsforschung', 'Gesundheitsforschung');
 
 
-CREATE TABLE wahlergebnisse2018
+CREATE TABLE IF NOT EXISTS wahlergebnisse2018
 (
     Partei                       VARCHAR(255),
     Erststimmen                  INT,

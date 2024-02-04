@@ -1,4 +1,3 @@
-# Replace 'your_database_url' with the actual database connection URL
 from pathlib import Path
 
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Boolean, ForeignKey, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -9,15 +9,6 @@ class Parteien(Base):
     ParteiID = Column(Integer, primary_key=True)
     Name = Column(String)
     kurzbezeichnung = Column(String)
-
-
-class Waehler(Base):
-    __tablename__ = "waehler"
-    WaehlerID = Column(Integer, primary_key=True)
-    Vorname = Column(String)
-    Nachname = Column(String)
-    Geburtsdatum = Column(Date)
-    StimmkreisId = Column(Integer, ForeignKey("stimmkreis.StimmkreisId"))
 
 
 class Stimmkreis(Base):
