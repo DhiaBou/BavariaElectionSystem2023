@@ -8,7 +8,7 @@ from database.scripts.analysis.B6.queries import (
     q5,
     q6,
     reload,
-    get_income_pro_wahlkreis,
+    get_income_pro_wahlkreis, q7,
 )
 
 wahlkreis_router = APIRouter(
@@ -54,6 +54,11 @@ async def query5():
 @wahlkreis_router.get("/q6")
 async def query6():
     return await q6()
+
+
+@wahlkreis_router.get("/q7/{stimmkreis}")
+async def query7(stimmkreis):
+    return await q7(stimmkreis)
 
 
 @wahlkreis_router.get("/einkommen")

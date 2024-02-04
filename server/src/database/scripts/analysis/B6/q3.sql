@@ -1,7 +1,3 @@
--- q3.1
-select d."StimmkreisId", d.stimmkreisname, CONCAT(d."Nachname", ', ', d."Vorname") as Kandidat
-from direct_candidates d;
--- q3.2
 with anzahl_stimmen_pro_stimmkreis as (select g.stimmkreisid,
                                               sum(g.gesamt_stimmen) as sum
 from gesamt_stimmen_pro_partei_pro_stimmkreis_view g

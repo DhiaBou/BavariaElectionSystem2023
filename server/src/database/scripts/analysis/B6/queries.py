@@ -3,43 +3,6 @@ from pathlib import Path
 from database.scripts.analysis.find_angeordnete import create_abgeordnete
 
 
-def get_auslaender_quote():
-    query = """
-        select * from auslaender_quote      
-         """
-    with get_db() as db:
-        result = db.execute(text(query))
-
-        # Fetch column names
-        column_names = result.keys()
-
-        # Fetch all rows and convert them to dictionaries
-        rows = result.fetchall()
-        result_list = [dict(zip(column_names, row)) for row in rows]
-    return result_list
-
-
-def get_income_pro_stimmkreis():
-    query = """
-          
-            select g."Gemeineschluessel", s."StimmkreisId", s."Name", e."Kreis",g."Name", e."Einkommen"
-            from stimmkreis s, "Einkommen_pro_stimmkreis"  e, gemeinde g
-            where g."Kreisschluessel" = e."Kreis" and g."StimmkreisID" = s."StimmkreisId"
-
-
-         """
-    with get_db() as db:
-        result = db.execute(text(query))
-
-        # Fetch column names
-        column_names = result.keys()
-
-        # Fetch all rows and convert them to dictionaries
-        rows = result.fetchall()
-        result_list = [dict(zip(column_names, row)) for row in rows]
-    return result_list
-
-
 async def q1():
     with open(Path(__file__).parent / "q1.sql", "r") as file:
         query = file.read()
@@ -194,6 +157,22 @@ async def q6():
         # Fetch all rows and convert them to dictionaries
         rows = result.fetchall()
         result_list = [dict(zip(column_names, row)) for row in rows]
+    return result_list
+
+
+async def q7(stimmkreis):
+    query_path = Path(__file__).parent / "q7.sql"
+    with open(query_path, "r") as file:
+        query = file.read()
+
+    with get_db() as db:
+        result = db.execute(text(query), {"StimmkreisId": stimmkreis})
+
+        column_names = result.keys()
+
+        rows = result.fetchall()
+        result_list = [dict(zip(column_names, row)) for row in rows]
+
     return result_list
 
 
